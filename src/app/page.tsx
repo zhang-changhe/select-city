@@ -17,6 +17,12 @@ export default function Home() {
   const [showIndicatorInfo, setShowIndicatorInfo] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
 
+  // 确定性随机数生成器，避免 hydration 错误
+  const seededRandom = (seed: number) => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
+
   // 颜色配置
   const colors = ['#5470c6', '#91cc75', '#fac858'];
 
@@ -356,9 +362,9 @@ export default function Home() {
             </linearGradient>
           </defs>
           {Array.from({ length: 60 }).map((_, i) => {
-            const x = (i * 32 + Math.random() * 20);
-            const height = 80 + Math.random() * 60;
-            const width = 20 + Math.random() * 15;
+            const x = (i * 32 + seededRandom(i + 1) * 20);
+            const height = 80 + seededRandom(i + 100) * 60;
+            const width = 20 + seededRandom(i + 200) * 15;
             return (
               <path
                 key={i}
