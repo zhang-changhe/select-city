@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { cities } from '@/data/cities';
+import { chinaCities, getAllCities, getCitiesByProvince } from '@/data/chinaCities';
 import { weatherData } from '@/data/weatherData';
 import { indicators, getIndicatorByType } from '@/data/indicators';
 import { City, WeatherIndexType } from '@/types';
@@ -13,6 +14,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCitySelector, setShowCitySelector] = useState(false);
   const [showIndicatorInfo, setShowIndicatorInfo] = useState(false);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
 
   // 颜色配置
   const colors = ['#5470c6', '#91cc75', '#fac858'];
@@ -27,6 +29,12 @@ export default function Home() {
   // 移除城市
   const removeCity = (cityId: string) => {
     setSelectedCities(selectedCities.filter(c => c.id !== cityId));
+  };
+
+  // 清除省份选择
+  const clearProvince = () => {
+    setSelectedProvince(null);
+    setSearchTerm('');
   };
 
   // 获取图表配置
@@ -102,11 +110,25 @@ export default function Home() {
     };
   };
 
-  // 过滤城市列表
-  const filteredCities = cities.filter(city =>
-    city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    city.province.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // 过滤城市列表（根据搜索词和选中省份）
+  const filteredProvinces = chinaCities.filter(province => {
+    if (!searchTerm) return true;
+    return province.province.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const filteredCities = (() => {
+    if (selectedProvince) {
+      const cities = getCitiesByProvince(selectedProvince);
+      return cities.filter(city =>
+        city.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else {
+      return getAllCities().filter(city =>
+        city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        city.province.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+  })();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -232,49 +254,97 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold mb-4">选择城市</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold">选择城市</h2>
+                {selectedProvince && (
+                  <button
+                    onClick={clearProvince}
+                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm"
+                  >
+                    ← 返回省份列表
+                  </button>
+                )}
+              </div>
               <input
                 type="text"
-                placeholder="搜索城市名称或省份"
+                placeholder={selectedProvince ? "搜索城市名称" : "搜索省份或城市"}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="p-6 overflow-y-auto max-h-[50vh]">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {filteredCities.map((city) => {
-                  const isSelected = !!selectedCities.find(c => c.id === city.id);
-                  return (
-                    <button
-                      key={city.id}
-                      onClick={() => {
-                        addCity(city);
-                        setShowCitySelector(false);
-                        setSearchTerm('');
-                      }}
-                      disabled={isSelected || selectedCities.length >= 3}
-                      className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                        isSelected
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : selectedCities.length >= 3
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-                      }`}
-                    >
-                      {city.name}
-                      <span className="block text-xs text-gray-500">
-                        {city.province}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              {!selectedProvince ? (
+                // 省份列表
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {filteredProvinces.map((province) => {
+                    const provinceCities = province.cities;
+                    const hasSelectedCities = selectedCities.some(c =>
+                      provinceCities.some(pc => pc.id === c.id)
+                    );
+
+                    return (
+                      <button
+                        key={province.provinceCode}
+                        onClick={() => {
+                          setSelectedProvince(province.province);
+                          setSearchTerm('');
+                        }}
+                        className={`px-3 py-3 rounded-lg text-sm transition-colors ${
+                          hasSelectedCities
+                            ? 'bg-blue-100 border-2 border-blue-400'
+                            : 'bg-blue-50 hover:bg-blue-100'
+                        }`}
+                      >
+                        <div className="font-semibold">{province.province}</div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {province.cities.length} 个城市
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                // 城市列表
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {filteredCities.length > 0 ? (
+                    filteredCities.map((city) => {
+                      const isSelected = !!selectedCities.find(c => c.id === city.id);
+                      return (
+                        <button
+                          key={city.id}
+                          onClick={() => {
+                            addCity(city);
+                            setShowCitySelector(false);
+                            setSelectedProvince(null);
+                            setSearchTerm('');
+                          }}
+                          disabled={isSelected || selectedCities.length >= 3}
+                          className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                            isSelected
+                              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                              : selectedCities.length >= 3
+                              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                              : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                          }`}
+                        >
+                          {city.name}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <div className="col-span-3 text-center text-gray-500 py-8">
+                      未找到匹配的城市
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="p-4 bg-gray-50 border-t border-gray-200 flex justify-end">
               <button
                 onClick={() => {
                   setShowCitySelector(false);
+                  setSelectedProvince(null);
                   setSearchTerm('');
                 }}
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
