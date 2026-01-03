@@ -178,9 +178,78 @@ export default function Home() {
   })();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className="min-h-screen"
+      style={{
+        background: 'linear-gradient(180deg, #87CEEB 0%, #98D8C8 20%, #7CB342 40%, #558B2F 60%, #33691E 80%, #1B5E20 100%)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        position: 'relative',
+      }}
+    >
+      {/* 添加自然背景装饰 - 模拟山脉和森林 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `
+            linear-gradient(180deg,
+              transparent 0%,
+              transparent 35%,
+              rgba(76, 175, 80, 0.1) 40%,
+              rgba(56, 142, 60, 0.2) 50%,
+              rgba(46, 125, 50, 0.3) 60%,
+              rgba(27, 94, 32, 0.4) 70%,
+              rgba(0, 77, 64, 0.5) 100%
+            ),
+            radial-gradient(ellipse 80% 50% at 50% 100%, rgba(33, 150, 243, 0.3) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 20% 80%, rgba(76, 175, 80, 0.2) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 35% at 80% 75%, rgba(56, 142, 60, 0.2) 0%, transparent 50%)
+          `,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* 模拟山脉轮廓 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '40%',
+          background: `
+            linear-gradient(180deg,
+              transparent 0%,
+              rgba(46, 125, 50, 0.1) 20%,
+              rgba(27, 94, 32, 0.2) 40%,
+              rgba(0, 77, 64, 0.3) 60%,
+              rgba(0, 60, 50, 0.5) 100%
+            ),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400'%3E%3Cpath fill='%23277022' fill-opacity='0.2' d='M0,400 L0,250 Q180,150 360,200 Q540,250 720,180 Q900,110 1080,160 Q1260,210 1440,150 L1440,400 Z'/%3E%3Cpath fill='%232E7D32' fill-opacity='0.15' d='M0,400 L0,280 Q240,180 480,220 Q720,260 960,200 Q1200,140 1440,180 L1440,400 Z'/%3E%3Cpath fill='%23388026' fill-opacity='0.1' d='M0,400 L0,300 Q300,220 600,260 Q900,300 1200,240 Q1320,220 1440,250 L1440,400 Z'/%3E%3C/svg%3E"),
+            no-repeat,
+            bottom,
+            background-size: cover,
+          `,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
       {/* 顶部操作区 */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header
+        className="shadow-lg border-b border-white/20"
+        style={{
+          background: 'rgba(255, 255, 255, 0.92)',
+          backdropFilter: 'blur(10px)',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <h1 className="text-3xl font-bold text-gray-900 text-center mb-6">
             养老选城指南
@@ -253,8 +322,18 @@ export default function Home() {
       </header>
 
       {/* 中间图表展示区 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-md p-6 min-h-[500px]">
+      <main
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        style={{ position: 'relative', zIndex: 10 }}
+      >
+        <div
+          className="rounded-lg shadow-xl p-6 min-h-[500px]"
+          style={{
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+          }}
+        >
           {selectedCities.length > 0 ? (
             <>
               <div className="mb-4 p-3 bg-gray-50 rounded text-sm">
@@ -280,7 +359,15 @@ export default function Home() {
       </main>
 
       {/* 底部说明区 */}
-      <footer className="bg-white border-t border-gray-200 mt-8">
+      <footer
+        className="border-t border-white/20 mt-8"
+        style={{
+          background: 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: 'blur(10px)',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center text-sm text-gray-600">
             <p className="mb-2">数据来源：国家气象数据中心（模拟数据）</p>
@@ -292,12 +379,16 @@ export default function Home() {
       {/* 城市选择弹窗 */}
       {showCitySelector && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
           onClick={() => setShowCitySelector(false)}
         >
           <div
-            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            className="rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            style={{
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(20px)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 border-b border-gray-200">
@@ -406,12 +497,16 @@ export default function Home() {
       {/* 指标说明弹窗 */}
       {showIndicatorInfo && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
           onClick={() => setShowIndicatorInfo(false)}
         >
           <div
-            className="bg-white rounded-lg shadow-xl max-w-md w-full"
+            className="rounded-lg shadow-2xl max-w-md w-full"
+            style={{
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(20px)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
