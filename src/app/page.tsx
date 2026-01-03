@@ -17,10 +17,10 @@ export default function Home() {
   const [showIndicatorInfo, setShowIndicatorInfo] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
 
-  // 确定性随机数生成器，避免 hydration 错误
+  // 确定性随机数生成器，避免 hydration 错误（使用整数运算）
   const seededRandom = (seed: number) => {
-    const x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
+    const x = (seed * 9301 + 49297) % 233280;
+    return x / 233280;
   };
 
   // 颜色配置
@@ -362,13 +362,21 @@ export default function Home() {
             </linearGradient>
           </defs>
           {Array.from({ length: 60 }).map((_, i) => {
-            const x = (i * 32 + seededRandom(i + 1) * 20);
-            const height = 80 + seededRandom(i + 100) * 60;
-            const width = 20 + seededRandom(i + 200) * 15;
+            const randomX = seededRandom(i + 1);
+            const randomHeight = seededRandom(i + 100);
+            const randomWidth = seededRandom(i + 200);
+
+            // 四舍五入到固定小数位，确保服务端和客户端一致
+            const x = Number((i * 32 + randomX * 20).toFixed(6));
+            const height = Number((80 + randomHeight * 60).toFixed(6));
+            const width = Number((20 + randomWidth * 15).toFixed(6));
+            const midX = Number((x + width / 2).toFixed(6));
+            const topY = Number((150 - height).toFixed(6));
+
             return (
               <path
                 key={i}
-                d={`M${x} 150 L${x + width / 2} ${150 - height} L${x + width} 150 Z`}
+                d={`M${x} 150 L${midX} ${topY} L${x + width} 150 Z`}
                 fill={i % 2 === 0 ? '#66BB6A' : '#4CAF50'}
                 opacity="0.9"
               />
