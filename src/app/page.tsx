@@ -587,7 +587,21 @@ export default function Home() {
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 text-center mb-6">
+          <h1
+            style={{
+              fontSize: '3rem',
+              fontWeight: '900',
+              textAlign: 'center',
+              marginBottom: '1.5rem',
+              background: 'linear-gradient(135deg, #1E88E5 0%, #43A047 50%, #F57C00 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '3px 3px 6px rgba(0, 0, 0, 0.2)',
+              letterSpacing: '0.1em',
+              filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15))',
+            }}
+          >
             养老选城指南
           </h1>
 
