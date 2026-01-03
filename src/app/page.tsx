@@ -641,7 +641,9 @@ export default function Home() {
         <div
           className="rounded-lg shadow-xl p-6 min-h-[500px]"
           style={{
-            background: 'rgba(255, 255, 255, 0.5)',
+            background: selectedCities.length > 0
+              ? 'rgba(255, 255, 255, 0.2)'
+              : 'rgba(255, 255, 255, 0.7)',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
           }}
