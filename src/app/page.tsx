@@ -187,7 +187,7 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
-        background: 'linear-gradient(180deg, #87CEEB 0%, #B3E5FC 25%, #E0F7FA 50%, #B9F6CA 75%, #C8E6C9 90%)',
+        background: 'linear-gradient(180deg, #4FC3F7 0%, #29B6F6 30%, #0288D1 60%, #0277BD 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -195,15 +195,15 @@ export default function Home() {
         overflow: 'hidden',
       }}
     >
-      {/* 天空层 - 渐变效果 */}
+      {/* 天空层 - 蓝天白云 */}
       <div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
-          height: '60%',
-          background: 'linear-gradient(180deg, #87CEEB 0%, #4FC3F7 30%, #81D4FA 60%, #B3E5FC 100%)',
+          height: '65%',
+          background: 'linear-gradient(180deg, #64B5F6 0%, #42A5F5 40%, #2196F3 70%, #1976D2 100%)',
           zIndex: 1,
         }}
       />
@@ -212,13 +212,13 @@ export default function Home() {
       <div
         style={{
           position: 'fixed',
-          top: '8%',
-          right: '12%',
-          width: '120px',
-          height: '120px',
+          top: '10%',
+          right: '15%',
+          width: '100px',
+          height: '100px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, #FFF176 0%, #FFD54F 50%, #FF8A65 100%)',
-          boxShadow: '0 0 60px 20px rgba(255, 213, 79, 0.4)',
+          background: 'radial-gradient(circle, #FFF59D 0%, #FFEE58 30%, #FFC107 70%, #FF9800 100%)',
+          boxShadow: '0 0 80px 30px rgba(255, 235, 59, 0.3)',
           zIndex: 2,
         }}
       />
@@ -227,37 +227,54 @@ export default function Home() {
       <div
         style={{
           position: 'fixed',
-          top: '15%',
-          left: '10%',
-          width: '200px',
-          height: '60px',
-          background: 'rgba(255, 255, 255, 0.9)',
-          borderRadius: '50%',
-          filter: 'blur(8px)',
+          top: '12%',
+          left: '8%',
           zIndex: 3,
-          boxShadow: '80px 20px 0 rgba(255, 255, 255, 0.8)',
         }}
-      />
-      <div
-        style={{
-          position: 'fixed',
-          top: '25%',
-          left: '60%',
-          width: '250px',
-          height: '70px',
-          background: 'rgba(255, 255, 255, 0.85)',
-          borderRadius: '50%',
-          filter: 'blur(6px)',
-          zIndex: 3,
-          boxShadow: '90px 15px 0 rgba(255, 255, 255, 0.75)',
-        }}
-      />
+      >
+        <svg width="200" height="80" viewBox="0 0 200 80">
+          <ellipse cx="60" cy="50" rx="50" ry="25" fill="rgba(255, 255, 255, 0.95)" />
+          <ellipse cx="90" cy="40" rx="40" ry="30" fill="rgba(255, 255, 255, 0.9)" />
+          <ellipse cx="130" cy="45" rx="45" ry="28" fill="rgba(255, 255, 255, 0.95)" />
+        </svg>
+      </div>
 
-      {/* 远山层 */}
       <div
         style={{
           position: 'fixed',
-          bottom: '35%',
+          top: '20%',
+          left: '55%',
+          zIndex: 3,
+        }}
+      >
+        <svg width="180" height="70" viewBox="0 0 180 70">
+          <ellipse cx="50" cy="45" rx="40" ry="22" fill="rgba(255, 255, 255, 0.9)" />
+          <ellipse cx="80" cy="35" rx="35" ry="28" fill="rgba(255, 255, 255, 0.85)" />
+          <ellipse cx="115" cy="40" rx="40" ry="25" fill="rgba(255, 255, 255, 0.9)" />
+        </svg>
+      </div>
+
+      <div
+        style={{
+          position: 'fixed',
+          top: '8%',
+          left: '30%',
+          zIndex: 3,
+          opacity: 0.8,
+        }}
+      >
+        <svg width="150" height="60" viewBox="0 0 150 60">
+          <ellipse cx="40" cy="40" rx="35" ry="20" fill="rgba(255, 255, 255, 0.85)" />
+          <ellipse cx="65" cy="30" rx="30" ry="25" fill="rgba(255, 255, 255, 0.8)" />
+          <ellipse cx="95" cy="35" rx="35" ry="22" fill="rgba(255, 255, 255, 0.85)" />
+        </svg>
+      </div>
+
+      {/* 山林层 - 与大海自然衔接 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '25%',
           left: 0,
           right: 0,
           zIndex: 4,
@@ -265,160 +282,107 @@ export default function Home() {
       >
         <svg
           width="100%"
-          height="300"
-          viewBox="0 0 1920 300"
+          height="400"
+          viewBox="0 0 1920 400"
           preserveAspectRatio="none"
           style={{ display: 'block' }}
         >
-          <path
-            d="M0 300 L0 180 Q200 80 400 150 Q600 220 800 120 Q1000 20 1200 140 Q1400 260 1600 100 Q1700 20 1800 80 Q1860 120 1920 100 L1920 300 Z"
-            fill="rgba(120, 144, 156, 0.4)"
-          />
-          <path
-            d="M0 300 L0 220 Q150 140 350 190 Q550 240 750 160 Q950 80 1150 170 Q1350 260 1550 130 Q1650 80 1750 120 Q1820 150 1920 130 L1920 300 Z"
-            fill="rgba(102, 126, 130, 0.5)"
-          />
-        </svg>
-      </div>
-
-      {/* 中山层 */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '28%',
-          left: 0,
-          right: 0,
-          zIndex: 5,
-        }}
-      >
-        <svg
-          width="100%"
-          height="280"
-          viewBox="0 0 1920 280"
-          preserveAspectRatio="none"
-          style={{ display: 'block' }}
-        >
-          <path
-            d="M0 280 L0 150 Q300 50 500 120 Q700 190 900 100 Q1100 10 1300 130 Q1500 250 1700 80 Q1800 30 1920 60 L1920 280 Z"
-            fill="rgba(84, 110, 122, 0.6)"
-          />
-          <path
-            d="M0 280 L0 200 Q200 120 450 170 Q700 220 950 140 Q1200 60 1450 160 Q1700 260 1850 120 L1920 140 L1920 280 Z"
-            fill="rgba(69, 90, 100, 0.7)"
-          />
-        </svg>
-      </div>
-
-      {/* 近山层 */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '20%',
-          left: 0,
-          right: 0,
-          zIndex: 6,
-        }}
-      >
-        <svg
-          width="100%"
-          height="250"
-          viewBox="0 0 1920 250"
-          preserveAspectRatio="none"
-          style={{ display: 'block' }}
-        >
-          <path
-            d="M0 250 L0 180 Q250 80 500 130 Q750 180 1000 110 Q1250 40 1500 140 Q1700 240 1850 120 L1920 140 L1920 250 Z"
-            fill="rgba(56, 74, 84, 0.8)"
-          />
-          <path
-            d="M0 250 L0 210 Q200 150 400 180 Q600 210 800 160 Q1000 110 1200 180 Q1400 250 1650 160 Q1800 100 1920 140 L1920 250 Z"
-            fill="rgba(43, 58, 66, 0.9)"
-          />
-        </svg>
-      </div>
-
-      {/* 森林层 */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '12%',
-          left: 0,
-          right: 0,
-          zIndex: 7,
-        }}
-      >
-        <svg
-          width="100%"
-          height="150"
-          viewBox="0 0 1920 150"
-          preserveAspectRatio="none"
-          style={{ display: 'block' }}
-        >
-          {/* 树木 */}
           <defs>
-            <linearGradient id="forestGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style={{ stopColor: '#66BB6A', stopOpacity: 1 }} />
+            <linearGradient id="mountainGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: '#5D4037', stopOpacity: 1 }} />
+              <stop offset="50%" style={{ stopColor: '#4E342E', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: '#3E2723', stopOpacity: 1 }} />
+            </linearGradient>
+            <linearGradient id="mountainGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: '#795548', stopOpacity: 1 }} />
+              <stop offset="50%" style={{ stopColor: '#6D4C41', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: '#5D4037', stopOpacity: 1 }} />
+            </linearGradient>
+            <linearGradient id="treeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: '#388E3C', stopOpacity: 1 }} />
               <stop offset="100%" style={{ stopColor: '#2E7D32', stopOpacity: 1 }} />
             </linearGradient>
           </defs>
-          {Array.from({ length: 60 }).map((_, i) => {
-            const randomX = seededRandom(i + 1);
-            const randomHeight = seededRandom(i + 100);
-            const randomWidth = seededRandom(i + 200);
 
-            // 四舍五入到固定小数位，确保服务端和客户端一致
-            const x = Number((i * 32 + randomX * 20).toFixed(6));
-            const height = Number((80 + randomHeight * 60).toFixed(6));
-            const width = Number((20 + randomWidth * 15).toFixed(6));
+          {/* 远山 */}
+          <path
+            d="M0 400 L0 200 Q200 100 400 180 Q600 260 800 160 Q1000 60 1200 150 Q1400 240 1600 100 Q1700 40 1800 90 Q1860 120 1920 100 L1920 400 Z"
+            fill="url(#mountainGradient1)"
+            opacity="0.4"
+          />
+
+          {/* 中山 */}
+          <path
+            d="M0 400 L0 250 Q150 160 380 200 Q610 240 840 170 Q1070 100 1300 160 Q1530 220 1700 130 Q1800 80 1920 120 L1920 400 Z"
+            fill="url(#mountainGradient2)"
+            opacity="0.6"
+          />
+
+          {/* 近山带树木 */}
+          <path
+            d="M0 400 L0 280 Q200 200 400 240 Q600 280 800 220 Q1000 160 1200 200 Q1400 240 1600 180 Q1750 140 1920 170 L1920 400 Z"
+            fill="url(#mountainGradient1)"
+            opacity="0.8"
+          />
+
+          {/* 树木点缀 */}
+          {Array.from({ length: 40 }).map((_, i) => {
+            const randomX = seededRandom(i + 300);
+            const randomHeight = seededRandom(i + 400);
+            const randomWidth = seededRandom(i + 500);
+
+            const x = Number((i * 48 + randomX * 30).toFixed(6));
+            const height = Number((40 + randomHeight * 50).toFixed(6));
+            const width = Number((15 + randomWidth * 20).toFixed(6));
             const midX = Number((x + width / 2).toFixed(6));
-            const topY = Number((150 - height).toFixed(6));
+            const topY = Number((280 - height).toFixed(6));
 
             return (
               <path
                 key={i}
-                d={`M${x} 150 L${midX} ${topY} L${x + width} 150 Z`}
-                fill={i % 2 === 0 ? '#66BB6A' : '#4CAF50'}
-                opacity="0.9"
+                d={`M${x} 280 L${midX} ${topY} L${x + width} 280 Z`}
+                fill="url(#treeGradient)"
+                opacity="0.7"
               />
             );
           })}
         </svg>
       </div>
 
-      {/* 海洋层 */}
+      {/* 海洋层 - 渐变过渡 */}
       <div
         style={{
           position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '12%',
-          background: 'linear-gradient(180deg, #4FC3F7 0%, #29B6F6 30%, #039BE5 70%, #0277BD 100%)',
-          zIndex: 8,
+          height: '25%',
+          background: 'linear-gradient(180deg, rgba(13, 71, 161, 0.6) 0%, #1565C0 20%, #1976D2 40%, #1E88E5 60%, #42A5F5 80%, #64B5F6 100%)',
+          zIndex: 5,
         }}
       >
-        {/* 波浪效果 */}
+        {/* 波浪效果 - 与山林自然衔接 */}
         <svg
           width="100%"
-          height="60"
-          viewBox="0 0 1920 60"
+          height="80"
+          viewBox="0 0 1920 80"
           preserveAspectRatio="none"
           style={{ position: 'absolute', top: 0, left: 0 }}
         >
           <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style={{ stopColor: 'rgba(255, 255, 255, 0.3)', stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: 'rgba(255, 255, 255, 0.1)', stopOpacity: 1 }} />
+            <linearGradient id="waveGradientNew" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: 'rgba(255, 255, 255, 0.25)', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: 'rgba(255, 255, 255, 0.05)', stopOpacity: 1 }} />
             </linearGradient>
           </defs>
-          {Array.from({ length: 3 }).map((_, i) => {
-            const offset = i * 20;
-            const opacity = 0.5 - i * 0.1;
+          {Array.from({ length: 4 }).map((_, i) => {
+            const offset = i * 18;
+            const opacity = 0.6 - i * 0.12;
             return (
               <path
                 key={i}
-                d={`M0 ${30 + offset} Q120 ${10 + offset} 240 ${30 + offset} Q360 ${50 + offset} 480 ${30 + offset} Q600 ${10 + offset} 720 ${30 + offset} Q840 ${50 + offset} 960 ${30 + offset} Q1080 ${10 + offset} 1200 ${30 + offset} Q1320 ${50 + offset} 1440 ${30 + offset} Q1560 ${10 + offset} 1680 ${30 + offset} Q1800 ${50 + offset} 1920 ${30 + offset} L1920 60 L0 60 Z`}
-                fill="url(#waveGradient)"
+                d={`M0 ${25 + offset} Q100 ${5 + offset} 200 ${25 + offset} Q300 ${45 + offset} 400 ${25 + offset} Q500 ${5 + offset} 600 ${25 + offset} Q700 ${45 + offset} 800 ${25 + offset} Q900 ${5 + offset} 1000 ${25 + offset} Q1100 ${45 + offset} 1200 ${25 + offset} Q1300 ${5 + offset} 1400 ${25 + offset} Q1500 ${45 + offset} 1600 ${25 + offset} Q1700 ${5 + offset} 1800 ${25 + offset} Q1860 ${45 + offset} 1920 ${25 + offset} L1920 80 L0 80 Z`}
+                fill="url(#waveGradientNew)"
                 style={{ opacity }}
               />
             );
@@ -426,7 +390,7 @@ export default function Home() {
         </svg>
       </div>
 
-      {/* 海鸥 - 前景海洋元素 */}
+      {/* 海鸥 */}
       <div
         style={{
           position: 'fixed',
@@ -434,7 +398,7 @@ export default function Home() {
           left: 0,
           right: 0,
           height: '50%',
-          zIndex: 9,
+          zIndex: 6,
           pointerEvents: 'none',
         }}
       >
@@ -450,7 +414,7 @@ export default function Home() {
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.7"
             />
@@ -461,18 +425,18 @@ export default function Home() {
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.8"
             />
           </g>
 
-          {/* 海鸥3 - 稍微不同的角度 */}
+          {/* 海鸥3 */}
           <g style={{ transform: 'translate(550px, 60px) scale(0.5)' }}>
             <path
               d="M0 20 Q15 10 30 20 Q45 10 60 20 Q30 28 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2.5"
               opacity="0.6"
             />
@@ -483,7 +447,7 @@ export default function Home() {
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.75"
             />
@@ -494,18 +458,18 @@ export default function Home() {
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.65"
             />
           </g>
 
-          {/* 海鸥6 - 较大 */}
+          {/* 海鸥6 */}
           <g style={{ transform: 'translate(1650px, 130px) scale(0.9)' }}>
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.8"
             />
@@ -516,7 +480,7 @@ export default function Home() {
             <path
               d="M0 20 Q15 10 30 20 Q45 10 60 20 Q30 28 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2.5"
               opacity="0.55"
             />
@@ -527,7 +491,7 @@ export default function Home() {
             <path
               d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
               fill="none"
-              stroke="#546E7A"
+              stroke="#455A64"
               strokeWidth="2"
               opacity="0.7"
             />
@@ -535,32 +499,32 @@ export default function Home() {
         </svg>
       </div>
 
-      {/* 泡沫装饰 - 增加海洋氛围 */}
+      {/* 泡沫装饰 */}
       <div
         style={{
           position: 'fixed',
-          bottom: '10%',
+          bottom: '15%',
           left: 0,
           right: 0,
           height: '5%',
-          zIndex: 9,
+          zIndex: 6,
           pointerEvents: 'none',
         }}
       >
         <svg
           width="100%"
-          height="50"
-          viewBox="0 0 1920 50"
+          height="40"
+          viewBox="0 0 1920 40"
           preserveAspectRatio="none"
         >
-          {Array.from({ length: 30 }).map((_, i) => {
-            const randomX = seededRandom(i + 500);
-            const randomY = seededRandom(i + 600);
-            const randomSize = seededRandom(i + 700);
+          {Array.from({ length: 25 }).map((_, i) => {
+            const randomX = seededRandom(i + 600);
+            const randomY = seededRandom(i + 700);
+            const randomSize = seededRandom(i + 800);
 
-            const x = Number((i * 64 + randomX * 40).toFixed(6));
-            const y = Number((15 + randomY * 30).toFixed(6));
-            const size = Number((2 + randomSize * 6).toFixed(6));
+            const x = Number((i * 77 + randomX * 35).toFixed(6));
+            const y = Number((10 + randomY * 25).toFixed(6));
+            const size = Number((1.5 + randomSize * 4).toFixed(6));
 
             return (
               <circle
@@ -568,14 +532,13 @@ export default function Home() {
                 cx={x}
                 cy={y}
                 r={size}
-                fill="rgba(255, 255, 255, 0.6)"
-                opacity={0.4 + randomSize * 0.4}
+                fill="rgba(255, 255, 255, 0.5)"
+                opacity={0.3 + randomSize * 0.3}
               />
             );
           })}
         </svg>
       </div>
-
       {/* 顶部操作区 */}
       <header
         className="shadow-lg border-b border-white/20"
