@@ -1,386 +1,276 @@
 import { CityWeatherData } from '@/types';
 
-// 城市气象数据（基于真实气候特征的模拟数据）
-export const weatherData: CityWeatherData[] = [
-  // 北京 - 温带季风气候
-  {
-    cityId: 'bj',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: -4, humidity: 44, uv_intensity: 2, rainfall: 3 },
-      { month: 2, temperature: -1, humidity: 44, uv_intensity: 3, rainfall: 5 },
-      { month: 3, temperature: 6, humidity: 46, uv_intensity: 5, rainfall: 10 },
-      { month: 4, temperature: 14, humidity: 48, uv_intensity: 7, rainfall: 20 },
-      { month: 5, temperature: 20, humidity: 53, uv_intensity: 8, rainfall: 35 },
-      { month: 6, temperature: 24, humidity: 62, uv_intensity: 9, rainfall: 75 },
-      { month: 7, temperature: 27, humidity: 75, uv_intensity: 8, rainfall: 175 },
-      { month: 8, temperature: 26, humidity: 76, uv_intensity: 7, rainfall: 155 },
-      { month: 9, temperature: 21, humidity: 67, uv_intensity: 6, rainfall: 50 },
-      { month: 10, temperature: 14, humidity: 60, uv_intensity: 5, rainfall: 20 },
-      { month: 11, temperature: 5, humidity: 53, uv_intensity: 3, rainfall: 8 },
-      { month: 12, temperature: -2, humidity: 47, uv_intensity: 2, rainfall: 3 },
-    ],
+// 省份气候特征定义
+interface ClimateFeature {
+  baseTemp: number[]; // 12个月的基准温度
+  humidityBase: number; // 基准湿度
+  rainfallPattern: number[]; // 降雨量模式（相对于年降雨量的比例）
+  uvBase: number[]; // 紫外线基数
+}
+
+// 各省份的气候特征（基于真实气候数据）
+const provinceClimate: Record<string, ClimateFeature> = {
+  // 直辖市
+  '北京市': {
+    baseTemp: [-4, -1, 6, 14, 20, 24, 27, 26, 21, 14, 5, -2],
+    humidityBase: 55,
+    rainfallPattern: [0.02, 0.03, 0.06, 0.12, 0.21, 0.45, 1.05, 0.93, 0.30, 0.12, 0.05, 0.02],
+    uvBase: [2, 3, 5, 7, 8, 9, 8, 7, 6, 5, 3, 2],
+  },
+  '天津市': {
+    baseTemp: [-3, 0, 7, 15, 21, 25, 27, 26, 21, 14, 5, -1],
+    humidityBase: 55,
+    rainfallPattern: [0.02, 0.03, 0.06, 0.12, 0.21, 0.45, 1.05, 0.93, 0.30, 0.12, 0.05, 0.02],
+    uvBase: [2, 3, 5, 7, 8, 9, 8, 7, 6, 5, 3, 2],
+  },
+  '上海市': {
+    baseTemp: [4, 6, 10, 15, 20, 24, 29, 28, 25, 19, 13, 7],
+    humidityBase: 75,
+    rainfallPattern: [0.12, 0.14, 0.21, 0.18, 0.23, 0.40, 0.33, 0.31, 0.29, 0.13, 0.11, 0.09],
+    uvBase: [3, 4, 5, 6, 7, 8, 9, 7, 6, 5, 4, 3],
+  },
+  '重庆市': {
+    baseTemp: [8, 10, 14, 19, 23, 26, 28, 28, 24, 19, 14, 10],
+    humidityBase: 78,
+    rainfallPattern: [0.04, 0.05, 0.09, 0.17, 0.29, 0.55, 0.86, 0.79, 0.45, 0.15, 0.07, 0.04],
+    uvBase: [2, 2, 3, 4, 5, 5, 6, 5, 4, 3, 2, 2],
   },
 
-  // 上海 - 亚热带季风气候
-  {
-    cityId: 'sh',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 4, humidity: 74, uv_intensity: 3, rainfall: 55 },
-      { month: 2, temperature: 6, humidity: 73, uv_intensity: 4, rainfall: 65 },
-      { month: 3, temperature: 10, humidity: 72, uv_intensity: 5, rainfall: 95 },
-      { month: 4, temperature: 15, humidity: 70, uv_intensity: 6, rainfall: 80 },
-      { month: 5, temperature: 20, humidity: 74, uv_intensity: 7, rainfall: 105 },
-      { month: 6, temperature: 24, humidity: 82, uv_intensity: 8, rainfall: 180 },
-      { month: 7, temperature: 29, humidity: 83, uv_intensity: 9, rainfall: 150 },
-      { month: 8, temperature: 28, humidity: 84, uv_intensity: 7, rainfall: 140 },
-      { month: 9, temperature: 25, humidity: 79, uv_intensity: 6, rainfall: 130 },
-      { month: 10, temperature: 19, humidity: 75, uv_intensity: 5, rainfall: 60 },
-      { month: 11, temperature: 13, humidity: 73, uv_intensity: 4, rainfall: 50 },
-      { month: 12, temperature: 7, humidity: 73, uv_intensity: 3, rainfall: 40 },
-    ],
+  // 华北地区
+  '河北省': {
+    baseTemp: [-3, 0, 7, 15, 20, 24, 26, 25, 20, 13, 5, -2],
+    humidityBase: 52,
+    rainfallPattern: [0.02, 0.03, 0.06, 0.12, 0.21, 0.45, 1.05, 0.93, 0.30, 0.12, 0.05, 0.02],
+    uvBase: [2, 3, 5, 7, 8, 9, 8, 7, 6, 5, 3, 2],
+  },
+  '山西省': {
+    baseTemp: [-6, -2, 5, 13, 19, 23, 25, 23, 17, 11, 2, -4],
+    humidityBase: 50,
+    rainfallPattern: [0.02, 0.03, 0.07, 0.12, 0.20, 0.42, 0.98, 0.87, 0.28, 0.11, 0.04, 0.02],
+    uvBase: [2, 3, 5, 7, 8, 9, 8, 7, 6, 5, 3, 2],
+  },
+  '内蒙古自治区': {
+    baseTemp: [-13, -8, 1, 9, 16, 21, 23, 21, 15, 7, -3, -11],
+    humidityBase: 45,
+    rainfallPattern: [0.02, 0.02, 0.04, 0.09, 0.17, 0.37, 0.86, 0.77, 0.25, 0.09, 0.03, 0.02],
+    uvBase: [2, 3, 5, 7, 9, 10, 9, 8, 6, 5, 3, 2],
   },
 
-  // 广州 - 亚热带季风气候
-  {
-    cityId: 'gz',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 14, humidity: 70, uv_intensity: 4, rainfall: 45 },
-      { month: 2, temperature: 15, humidity: 77, uv_intensity: 4, rainfall: 70 },
-      { month: 3, temperature: 18, humidity: 82, uv_intensity: 5, rainfall: 90 },
-      { month: 4, temperature: 22, humidity: 83, uv_intensity: 6, rainfall: 175 },
-      { month: 5, temperature: 26, humidity: 83, uv_intensity: 7, rainfall: 290 },
-      { month: 6, temperature: 28, humidity: 85, uv_intensity: 8, rainfall: 280 },
-      { month: 7, temperature: 29, humidity: 83, uv_intensity: 9, rainfall: 230 },
-      { month: 8, temperature: 29, humidity: 84, uv_intensity: 8, rainfall: 240 },
-      { month: 9, temperature: 27, humidity: 80, uv_intensity: 7, rainfall: 180 },
-      { month: 10, temperature: 24, humidity: 74, uv_intensity: 6, rainfall: 70 },
-      { month: 11, temperature: 19, humidity: 71, uv_intensity: 5, rainfall: 45 },
-      { month: 12, temperature: 15, humidity: 67, uv_intensity: 4, rainfall: 35 },
-    ],
+  // 东北地区
+  '辽宁省': {
+    baseTemp: [-8, -5, 2, 10, 16, 21, 24, 23, 17, 10, 1, -5],
+    humidityBase: 55,
+    rainfallPattern: [0.02, 0.02, 0.04, 0.09, 0.17, 0.38, 0.88, 0.78, 0.25, 0.10, 0.03, 0.02],
+    uvBase: [2, 3, 5, 6, 7, 8, 8, 7, 6, 5, 3, 2],
+  },
+  '吉林省': {
+    baseTemp: [-15, -11, -3, 6, 13, 18, 22, 20, 14, 6, -4, -12],
+    humidityBase: 58,
+    rainfallPattern: [0.02, 0.02, 0.04, 0.09, 0.17, 0.37, 0.86, 0.77, 0.25, 0.09, 0.03, 0.02],
+    uvBase: [2, 3, 5, 6, 7, 8, 8, 7, 6, 4, 3, 2],
+  },
+  '黑龙江省': {
+    baseTemp: [-19, -15, -5, 5, 13, 18, 21, 19, 12, 4, -7, -16],
+    humidityBase: 62,
+    rainfallPattern: [0.02, 0.02, 0.04, 0.09, 0.17, 0.37, 0.86, 0.77, 0.25, 0.09, 0.03, 0.02],
+    uvBase: [2, 2, 4, 5, 6, 7, 7, 6, 5, 4, 2, 2],
   },
 
-  // 三亚 - 热带季风气候
-  {
-    cityId: 'sy',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 21, humidity: 74, uv_intensity: 8, rainfall: 8 },
-      { month: 2, temperature: 22, humidity: 78, uv_intensity: 9, rainfall: 15 },
-      { month: 3, temperature: 24, humidity: 80, uv_intensity: 10, rainfall: 30 },
-      { month: 4, temperature: 26, humidity: 81, uv_intensity: 11, rainfall: 45 },
-      { month: 5, temperature: 28, humidity: 82, uv_intensity: 12, rainfall: 130 },
-      { month: 6, temperature: 28, humidity: 84, uv_intensity: 11, rainfall: 220 },
-      { month: 7, temperature: 28, humidity: 83, uv_intensity: 10, rainfall: 180 },
-      { month: 8, temperature: 28, humidity: 84, uv_intensity: 10, rainfall: 230 },
-      { month: 9, temperature: 27, humidity: 84, uv_intensity: 9, rainfall: 280 },
-      { month: 10, temperature: 26, humidity: 82, uv_intensity: 9, rainfall: 190 },
-      { month: 11, temperature: 24, humidity: 79, uv_intensity: 8, rainfall: 60 },
-      { month: 12, temperature: 22, humidity: 75, uv_intensity: 8, rainfall: 15 },
-    ],
+  // 华东地区
+  '江苏省': {
+    baseTemp: [2, 4, 9, 15, 20, 24, 28, 27, 22, 16, 9, 3],
+    humidityBase: 72,
+    rainfallPattern: [0.10, 0.12, 0.18, 0.15, 0.20, 0.35, 0.29, 0.27, 0.24, 0.11, 0.09, 0.07],
+    uvBase: [3, 4, 5, 6, 7, 8, 9, 7, 6, 5, 4, 3],
+  },
+  '浙江省': {
+    baseTemp: [5, 6, 10, 16, 21, 24, 28, 28, 24, 19, 13, 7],
+    humidityBase: 74,
+    rainfallPattern: [0.11, 0.13, 0.20, 0.17, 0.22, 0.38, 0.31, 0.29, 0.27, 0.12, 0.10, 0.08],
+    uvBase: [3, 4, 5, 6, 7, 8, 9, 7, 6, 5, 4, 3],
+  },
+  '安徽省': {
+    baseTemp: [2, 4, 9, 15, 20, 24, 27, 27, 22, 17, 10, 4],
+    humidityBase: 70,
+    rainfallPattern: [0.10, 0.12, 0.18, 0.16, 0.21, 0.37, 0.30, 0.28, 0.25, 0.11, 0.09, 0.07],
+    uvBase: [3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 3],
+  },
+  '福建省': {
+    baseTemp: [11, 12, 15, 19, 23, 26, 28, 28, 26, 22, 17, 13],
+    humidityBase: 76,
+    rainfallPattern: [0.08, 0.16, 0.21, 0.28, 0.39, 0.46, 0.32, 0.39, 0.25, 0.09, 0.07, 0.06],
+    uvBase: [4, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4],
+  },
+  '江西省': {
+    baseTemp: [6, 8, 12, 18, 23, 26, 29, 29, 25, 20, 14, 8],
+    humidityBase: 75,
+    rainfallPattern: [0.12, 0.18, 0.27, 0.33, 0.42, 0.50, 0.35, 0.43, 0.27, 0.10, 0.08, 0.07],
+    uvBase: [3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 4, 3],
+  },
+  '山东省': {
+    baseTemp: [-1, 1, 7, 14, 19, 24, 27, 26, 21, 15, 7, 1],
+    humidityBase: 60,
+    rainfallPattern: [0.03, 0.04, 0.07, 0.13, 0.22, 0.46, 1.06, 0.94, 0.31, 0.12, 0.05, 0.03],
+    uvBase: [2, 3, 5, 6, 7, 8, 8, 7, 6, 5, 3, 2],
   },
 
-  // 海口 - 热带季风气候
-  {
-    cityId: 'hk',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 18, humidity: 82, uv_intensity: 7, rainfall: 25 },
-      { month: 2, temperature: 19, humidity: 84, uv_intensity: 8, rainfall: 45 },
-      { month: 3, temperature: 22, humidity: 85, uv_intensity: 9, rainfall: 70 },
-      { month: 4, temperature: 26, humidity: 83, uv_intensity: 10, rainfall: 100 },
-      { month: 5, temperature: 29, humidity: 81, uv_intensity: 11, rainfall: 200 },
-      { month: 6, temperature: 30, humidity: 83, uv_intensity: 10, rainfall: 250 },
-      { month: 7, temperature: 30, humidity: 82, uv_intensity: 9, rainfall: 220 },
-      { month: 8, temperature: 29, humidity: 83, uv_intensity: 9, rainfall: 300 },
-      { month: 9, temperature: 28, humidity: 83, uv_intensity: 8, rainfall: 300 },
-      { month: 10, temperature: 26, humidity: 81, uv_intensity: 8, rainfall: 180 },
-      { month: 11, temperature: 23, humidity: 80, uv_intensity: 7, rainfall: 80 },
-      { month: 12, temperature: 19, humidity: 80, uv_intensity: 7, rainfall: 45 },
-    ],
+  // 华中地区
+  '河南省': {
+    baseTemp: [0, 3, 9, 16, 21, 26, 28, 27, 22, 16, 8, 2],
+    humidityBase: 65,
+    rainfallPattern: [0.04, 0.05, 0.09, 0.17, 0.29, 0.55, 0.86, 0.79, 0.45, 0.15, 0.07, 0.04],
+    uvBase: [3, 4, 5, 7, 8, 9, 8, 7, 6, 5, 4, 3],
+  },
+  '湖北省': {
+    baseTemp: [4, 6, 11, 17, 22, 26, 29, 29, 24, 18, 11, 5],
+    humidityBase: 72,
+    rainfallPattern: [0.08, 0.11, 0.17, 0.21, 0.30, 0.51, 0.43, 0.40, 0.26, 0.10, 0.08, 0.06],
+    uvBase: [3, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3],
+  },
+  '湖南省': {
+    baseTemp: [5, 7, 11, 17, 22, 26, 29, 28, 24, 19, 13, 7],
+    humidityBase: 78,
+    rainfallPattern: [0.11, 0.14, 0.22, 0.27, 0.38, 0.52, 0.36, 0.44, 0.24, 0.09, 0.07, 0.06],
+    uvBase: [2, 3, 4, 5, 6, 7, 8, 7, 6, 4, 3, 2],
   },
 
-  // 成都 - 亚热带湿润气候
-  {
-    cityId: 'cd',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 6, humidity: 80, uv_intensity: 2, rainfall: 10 },
-      { month: 2, temperature: 8, humidity: 77, uv_intensity: 3, rainfall: 15 },
-      { month: 3, temperature: 12, humidity: 73, uv_intensity: 4, rainfall: 25 },
-      { month: 4, temperature: 17, humidity: 73, uv_intensity: 5, rainfall: 50 },
-      { month: 5, temperature: 21, humidity: 73, uv_intensity: 6, rainfall: 85 },
-      { month: 6, temperature: 24, humidity: 80, uv_intensity: 6, rainfall: 160 },
-      { month: 7, temperature: 26, humidity: 84, uv_intensity: 6, rainfall: 250 },
-      { month: 8, temperature: 26, humidity: 84, uv_intensity: 5, rainfall: 230 },
-      { month: 9, temperature: 22, humidity: 84, uv_intensity: 4, rainfall: 130 },
-      { month: 10, temperature: 17, humidity: 84, uv_intensity: 4, rainfall: 45 },
-      { month: 11, temperature: 12, humidity: 80, uv_intensity: 3, rainfall: 20 },
-      { month: 12, temperature: 7, humidity: 80, uv_intensity: 2, rainfall: 8 },
-    ],
+  // 华南地区
+  '广东省': {
+    baseTemp: [14, 15, 18, 22, 26, 28, 29, 29, 27, 24, 19, 15],
+    humidityBase: 75,
+    rainfallPattern: [0.08, 0.12, 0.16, 0.31, 0.51, 0.50, 0.41, 0.43, 0.32, 0.13, 0.08, 0.06],
+    uvBase: [4, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4],
+  },
+  '广西壮族自治区': {
+    baseTemp: [12, 13, 17, 22, 26, 28, 29, 29, 27, 23, 18, 14],
+    humidityBase: 75,
+    rainfallPattern: [0.08, 0.12, 0.16, 0.31, 0.51, 0.50, 0.41, 0.43, 0.32, 0.13, 0.08, 0.06],
+    uvBase: [4, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4],
+  },
+  '海南省': {
+    baseTemp: [18, 19, 22, 26, 29, 30, 30, 29, 28, 26, 23, 19],
+    humidityBase: 82,
+    rainfallPattern: [0.04, 0.08, 0.12, 0.18, 0.35, 0.44, 0.39, 0.53, 0.53, 0.32, 0.14, 0.08],
+    uvBase: [7, 8, 9, 10, 11, 10, 9, 9, 8, 8, 7, 7],
   },
 
-  // 昆明 - 亚热带高原季风气候
-  {
-    cityId: 'km',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 9, humidity: 70, uv_intensity: 6, rainfall: 15 },
-      { month: 2, temperature: 11, humidity: 60, uv_intensity: 7, rainfall: 20 },
-      { month: 3, temperature: 14, humidity: 55, uv_intensity: 8, rainfall: 25 },
-      { month: 4, temperature: 17, humidity: 52, uv_intensity: 9, rainfall: 25 },
-      { month: 5, temperature: 19, humidity: 60, uv_intensity: 10, rainfall: 80 },
-      { month: 6, temperature: 21, humidity: 75, uv_intensity: 9, rainfall: 180 },
-      { month: 7, temperature: 21, humidity: 80, uv_intensity: 7, rainfall: 200 },
-      { month: 8, temperature: 21, humidity: 79, uv_intensity: 7, rainfall: 190 },
-      { month: 9, temperature: 19, humidity: 78, uv_intensity: 7, rainfall: 120 },
-      { month: 10, temperature: 17, humidity: 75, uv_intensity: 7, rainfall: 75 },
-      { month: 11, temperature: 13, humidity: 72, uv_intensity: 6, rainfall: 45 },
-      { month: 12, temperature: 10, humidity: 70, uv_intensity: 6, rainfall: 15 },
-    ],
+  // 西南地区
+  '四川省': {
+    baseTemp: [6, 8, 12, 17, 21, 24, 26, 26, 22, 17, 12, 7],
+    humidityBase: 80,
+    rainfallPattern: [0.04, 0.05, 0.09, 0.17, 0.29, 0.55, 0.86, 0.79, 0.45, 0.15, 0.07, 0.04],
+    uvBase: [2, 3, 4, 5, 6, 6, 6, 5, 4, 4, 3, 2],
+  },
+  '贵州省': {
+    baseTemp: [5, 7, 11, 16, 20, 23, 25, 24, 21, 16, 11, 6],
+    humidityBase: 78,
+    rainfallPattern: [0.04, 0.05, 0.09, 0.17, 0.29, 0.55, 0.86, 0.79, 0.45, 0.15, 0.07, 0.04],
+    uvBase: [3, 3, 4, 5, 6, 6, 6, 5, 4, 4, 3, 3],
+  },
+  '云南省': {
+    baseTemp: [9, 11, 14, 17, 19, 21, 21, 21, 19, 17, 13, 10],
+    humidityBase: 70,
+    rainfallPattern: [0.06, 0.08, 0.10, 0.10, 0.32, 0.73, 0.81, 0.77, 0.48, 0.30, 0.18, 0.06],
+    uvBase: [6, 7, 8, 9, 10, 9, 7, 7, 7, 7, 6, 6],
+  },
+  '西藏自治区': {
+    baseTemp: [0, 2, 5, 8, 12, 15, 16, 15, 13, 9, 4, 1],
+    humidityBase: 40,
+    rainfallPattern: [0.01, 0.02, 0.04, 0.06, 0.16, 0.51, 0.91, 0.82, 0.42, 0.08, 0.01, 0.01],
+    uvBase: [6, 7, 9, 11, 12, 11, 10, 10, 10, 9, 7, 6],
   },
 
-  // 厦门 - 亚热带海洋性季风气候
-  {
-    cityId: 'xm',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 13, humidity: 72, uv_intensity: 4, rainfall: 35 },
-      { month: 2, temperature: 13, humidity: 73, uv_intensity: 4, rainfall: 70 },
-      { month: 3, temperature: 15, humidity: 75, uv_intensity: 5, rainfall: 90 },
-      { month: 4, temperature: 19, humidity: 77, uv_intensity: 6, rainfall: 120 },
-      { month: 5, temperature: 23, humidity: 78, uv_intensity: 7, rainfall: 170 },
-      { month: 6, temperature: 26, humidity: 83, uv_intensity: 8, rainfall: 200 },
-      { month: 7, temperature: 28, humidity: 81, uv_intensity: 9, rainfall: 140 },
-      { month: 8, temperature: 28, humidity: 82, uv_intensity: 8, rainfall: 170 },
-      { month: 9, temperature: 27, humidity: 79, uv_intensity: 7, rainfall: 110 },
-      { month: 10, temperature: 24, humidity: 72, uv_intensity: 6, rainfall: 50 },
-      { month: 11, temperature: 20, humidity: 68, uv_intensity: 5, rainfall: 40 },
-      { month: 12, temperature: 16, humidity: 69, uv_intensity: 4, rainfall: 35 },
-    ],
+  // 西北地区
+  '陕西省': {
+    baseTemp: [0, 3, 9, 15, 20, 25, 27, 25, 20, 14, 6, 1],
+    humidityBase: 60,
+    rainfallPattern: [0.03, 0.05, 0.10, 0.18, 0.31, 0.59, 0.92, 0.83, 0.47, 0.16, 0.06, 0.03],
+    uvBase: [3, 4, 6, 8, 9, 10, 9, 8, 7, 5, 4, 3],
+  },
+  '甘肃省': {
+    baseTemp: [-6, -2, 4, 11, 16, 20, 22, 21, 16, 9, 1, -5],
+    humidityBase: 50,
+    rainfallPattern: [0.02, 0.03, 0.07, 0.12, 0.20, 0.42, 0.98, 0.87, 0.28, 0.11, 0.04, 0.02],
+    uvBase: [3, 4, 6, 8, 9, 10, 9, 8, 7, 5, 4, 3],
+  },
+  '青海省': {
+    baseTemp: [-8, -5, 0, 6, 11, 14, 16, 15, 10, 4, -3, -7],
+    humidityBase: 52,
+    rainfallPattern: [0.02, 0.03, 0.07, 0.12, 0.20, 0.42, 0.98, 0.87, 0.28, 0.11, 0.04, 0.02],
+    uvBase: [4, 5, 7, 9, 10, 10, 9, 8, 7, 6, 4, 4],
+  },
+  '宁夏回族自治区': {
+    baseTemp: [-7, -3, 3, 10, 16, 20, 22, 21, 15, 9, 1, -5],
+    humidityBase: 50,
+    rainfallPattern: [0.02, 0.03, 0.07, 0.12, 0.20, 0.42, 0.98, 0.87, 0.28, 0.11, 0.04, 0.02],
+    uvBase: [3, 4, 6, 8, 9, 10, 9, 8, 7, 5, 4, 3],
+  },
+  '新疆维吾尔自治区': {
+    baseTemp: [-12, -8, 2, 12, 19, 23, 25, 23, 17, 9, -1, -9],
+    humidityBase: 45,
+    rainfallPattern: [0.02, 0.03, 0.07, 0.12, 0.20, 0.42, 0.98, 0.87, 0.28, 0.11, 0.04, 0.02],
+    uvBase: [2, 4, 6, 9, 10, 11, 10, 9, 7, 5, 3, 2],
   },
 
-  // 青岛 - 温带季风气候（海洋性）
-  {
-    cityId: 'qd',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: -1, humidity: 60, uv_intensity: 3, rainfall: 10 },
-      { month: 2, temperature: 1, humidity: 59, uv_intensity: 4, rainfall: 12 },
-      { month: 3, temperature: 6, humidity: 62, uv_intensity: 5, rainfall: 20 },
-      { month: 4, temperature: 12, humidity: 64, uv_intensity: 6, rainfall: 30 },
-      { month: 5, temperature: 18, humidity: 68, uv_intensity: 7, rainfall: 50 },
-      { month: 6, temperature: 22, humidity: 78, uv_intensity: 8, rainfall: 80 },
-      { month: 7, temperature: 26, humidity: 85, uv_intensity: 8, rainfall: 140 },
-      { month: 8, temperature: 26, humidity: 83, uv_intensity: 7, rainfall: 130 },
-      { month: 9, temperature: 22, humidity: 73, uv_intensity: 6, rainfall: 70 },
-      { month: 10, temperature: 16, humidity: 65, uv_intensity: 5, rainfall: 40 },
-      { month: 11, temperature: 9, humidity: 62, uv_intensity: 4, rainfall: 25 },
-      { month: 12, temperature: 2, humidity: 60, uv_intensity: 3, rainfall: 12 },
-    ],
+  // 台湾、香港、澳门
+  '台湾省': {
+    baseTemp: [16, 17, 19, 23, 26, 28, 29, 29, 28, 25, 21, 17],
+    humidityBase: 76,
+    rainfallPattern: [0.08, 0.12, 0.16, 0.25, 0.38, 0.44, 0.35, 0.47, 0.38, 0.16, 0.08, 0.07],
+    uvBase: [4, 5, 6, 7, 8, 9, 9, 8, 8, 6, 5, 4],
   },
+  '香港特别行政区': {
+    baseTemp: [15, 16, 18, 22, 26, 28, 29, 29, 28, 25, 21, 17],
+    humidityBase: 78,
+    rainfallPattern: [0.07, 0.11, 0.15, 0.28, 0.39, 0.48, 0.40, 0.48, 0.36, 0.15, 0.07, 0.06],
+    uvBase: [4, 5, 6, 7, 8, 9, 9, 8, 8, 6, 5, 4],
+  },
+  '澳门特别行政区': {
+    baseTemp: [15, 16, 18, 22, 26, 28, 29, 29, 28, 25, 21, 17],
+    humidityBase: 78,
+    rainfallPattern: [0.07, 0.11, 0.15, 0.28, 0.39, 0.48, 0.40, 0.48, 0.36, 0.15, 0.07, 0.06],
+    uvBase: [4, 5, 6, 7, 8, 9, 9, 8, 8, 6, 5, 4],
+  },
+};
 
-  // 大连 - 温带季风气候（海洋性）
-  {
-    cityId: 'dl',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: -4, humidity: 58, uv_intensity: 3, rainfall: 8 },
-      { month: 2, temperature: -2, humidity: 56, uv_intensity: 3, rainfall: 6 },
-      { month: 3, temperature: 3, humidity: 55, uv_intensity: 4, rainfall: 15 },
-      { month: 4, temperature: 10, humidity: 55, uv_intensity: 5, rainfall: 25 },
-      { month: 5, temperature: 16, humidity: 60, uv_intensity: 6, rainfall: 45 },
-      { month: 6, temperature: 21, humidity: 70, uv_intensity: 7, rainfall: 75 },
-      { month: 7, temperature: 24, humidity: 80, uv_intensity: 8, rainfall: 150 },
-      { month: 8, temperature: 24, humidity: 78, uv_intensity: 7, rainfall: 140 },
-      { month: 9, temperature: 20, humidity: 68, uv_intensity: 6, rainfall: 70 },
-      { month: 10, temperature: 13, humidity: 61, uv_intensity: 5, rainfall: 35 },
-      { month: 11, temperature: 5, humidity: 58, uv_intensity: 4, rainfall: 20 },
-      { month: 12, temperature: -2, humidity: 57, uv_intensity: 3, rainfall: 10 },
-    ],
-  },
+// 根据省份生成城市气象数据
+function generateCityWeather(cityId: string, province: string, cityOffset: number = 0): CityWeatherData {
+  const climate = provinceClimate[province];
+  if (!climate) {
+    // 如果省份气候数据不存在，使用华北地区作为默认值
+    return generateCityWeather(cityId, '北京市', cityOffset);
+  }
 
-  // 杭州 - 亚热带季风气候
-  {
-    cityId: 'hz',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 4, humidity: 75, uv_intensity: 3, rainfall: 60 },
-      { month: 2, temperature: 6, humidity: 76, uv_intensity: 4, rainfall: 70 },
-      { month: 3, temperature: 10, humidity: 78, uv_intensity: 5, rainfall: 110 },
-      { month: 4, temperature: 16, humidity: 75, uv_intensity: 6, rainfall: 100 },
-      { month: 5, temperature: 21, humidity: 77, uv_intensity: 7, rainfall: 130 },
-      { month: 6, temperature: 25, humidity: 82, uv_intensity: 8, rainfall: 200 },
-      { month: 7, temperature: 29, humidity: 82, uv_intensity: 9, rainfall: 180 },
-      { month: 8, temperature: 29, humidity: 83, uv_intensity: 7, rainfall: 160 },
-      { month: 9, temperature: 25, humidity: 81, uv_intensity: 6, rainfall: 130 },
-      { month: 10, temperature: 19, humidity: 79, uv_intensity: 5, rainfall: 70 },
-      { month: 11, temperature: 13, humidity: 75, uv_intensity: 4, rainfall: 55 },
-      { month: 12, temperature: 7, humidity: 74, uv_intensity: 3, rainfall: 45 },
-    ],
-  },
+  // 城市偏移量，使同一省份不同城市的气候略有差异
+  const tempOffset = cityOffset * 0.5; // 温度偏移
+  const humidityOffset = cityOffset * 2; // 湿度偏移
+  const rainfallMultiplier = 1 + (cityOffset * 0.1); // 降雨量倍数
 
-  // 天津 - 温带季风气候
-  {
-    cityId: 'tj',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: -4, humidity: 50, uv_intensity: 2, rainfall: 4 },
-      { month: 2, temperature: -1, humidity: 49, uv_intensity: 3, rainfall: 6 },
-      { month: 3, temperature: 6, humidity: 49, uv_intensity: 5, rainfall: 8 },
-      { month: 4, temperature: 14, humidity: 50, uv_intensity: 7, rainfall: 22 },
-      { month: 5, temperature: 20, humidity: 53, uv_intensity: 8, rainfall: 38 },
-      { month: 6, temperature: 24, humidity: 65, uv_intensity: 9, rainfall: 80 },
-      { month: 7, temperature: 27, humidity: 78, uv_intensity: 8, rainfall: 180 },
-      { month: 8, temperature: 26, humidity: 78, uv_intensity: 7, rainfall: 160 },
-      { month: 9, temperature: 21, humidity: 68, uv_intensity: 6, rainfall: 55 },
-      { month: 10, temperature: 14, humidity: 61, uv_intensity: 5, rainfall: 22 },
-      { month: 11, temperature: 5, humidity: 56, uv_intensity: 3, rainfall: 10 },
-      { month: 12, temperature: -2, humidity: 52, uv_intensity: 2, rainfall: 4 },
-    ],
-  },
+  const monthlyData = climate.baseTemp.map((temp, month) => {
+    return {
+      month: month + 1,
+      temperature: Math.round((temp + tempOffset) * 10) / 10,
+      humidity: Math.min(95, Math.max(20, Math.round(climate.humidityBase + humidityOffset + Math.random() * 5 - 2.5))),
+      uv_intensity: climate.uvBase[month],
+      rainfall: Math.round(climate.rainfallPattern[month] * 200 * rainfallMultiplier * (1 + Math.random() * 0.2 - 0.1)),
+    };
+  });
 
-  // 深圳 - 亚热带季风气候
-  {
-    cityId: 'sz',
+  return {
+    cityId,
     year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 15, humidity: 72, uv_intensity: 5, rainfall: 30 },
-      { month: 2, temperature: 16, humidity: 78, uv_intensity: 5, rainfall: 50 },
-      { month: 3, temperature: 19, humidity: 81, uv_intensity: 6, rainfall: 70 },
-      { month: 4, temperature: 23, humidity: 82, uv_intensity: 7, rainfall: 160 },
-      { month: 5, temperature: 27, humidity: 83, uv_intensity: 8, rainfall: 280 },
-      { month: 6, temperature: 29, humidity: 85, uv_intensity: 9, rainfall: 290 },
-      { month: 7, temperature: 30, humidity: 83, uv_intensity: 10, rainfall: 250 },
-      { month: 8, temperature: 30, humidity: 84, uv_intensity: 9, rainfall: 260 },
-      { month: 9, temperature: 28, humidity: 81, uv_intensity: 8, rainfall: 200 },
-      { month: 10, temperature: 25, humidity: 75, uv_intensity: 7, rainfall: 60 },
-      { month: 11, temperature: 20, humidity: 72, uv_intensity: 6, rainfall: 40 },
-      { month: 12, temperature: 16, humidity: 68, uv_intensity: 5, rainfall: 30 },
-    ],
-  },
+    monthlyData,
+  };
+}
 
-  // 重庆 - 亚热带季风气候
-  {
-    cityId: 'cq',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 8, humidity: 83, uv_intensity: 2, rainfall: 20 },
-      { month: 2, temperature: 10, humidity: 80, uv_intensity: 3, rainfall: 25 },
-      { month: 3, temperature: 14, humidity: 78, uv_intensity: 4, rainfall: 45 },
-      { month: 4, temperature: 19, humidity: 76, uv_intensity: 5, rainfall: 85 },
-      { month: 5, temperature: 23, humidity: 77, uv_intensity: 6, rainfall: 150 },
-      { month: 6, temperature: 26, humidity: 82, uv_intensity: 6, rainfall: 200 },
-      { month: 7, temperature: 28, humidity: 83, uv_intensity: 6, rainfall: 180 },
-      { month: 8, temperature: 28, humidity: 83, uv_intensity: 6, rainfall: 140 },
-      { month: 9, temperature: 24, humidity: 81, uv_intensity: 5, rainfall: 120 },
-      { month: 10, temperature: 18, humidity: 83, uv_intensity: 4, rainfall: 90 },
-      { month: 11, temperature: 14, humidity: 81, uv_intensity: 3, rainfall: 50 },
-      { month: 12, temperature: 9, humidity: 82, uv_intensity: 2, rainfall: 20 },
-    ],
-  },
+// 导入城市列表
+import { chinaCities } from '@/data/chinaCities';
 
-  // 武汉 - 亚热带季风气候
-  {
-    cityId: 'wh',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 4, humidity: 76, uv_intensity: 3, rainfall: 40 },
-      { month: 2, temperature: 6, humidity: 75, uv_intensity: 3, rainfall: 55 },
-      { month: 3, temperature: 10, humidity: 75, uv_intensity: 4, rainfall: 85 },
-      { month: 4, temperature: 16, humidity: 74, uv_intensity: 5, rainfall: 130 },
-      { month: 5, temperature: 21, humidity: 75, uv_intensity: 6, rainfall: 165 },
-      { month: 6, temperature: 25, humidity: 81, uv_intensity: 7, rainfall: 220 },
-      { month: 7, temperature: 29, humidity: 80, uv_intensity: 8, rainfall: 170 },
-      { month: 8, temperature: 29, humidity: 81, uv_intensity: 7, rainfall: 130 },
-      { month: 9, temperature: 24, humidity: 79, uv_intensity: 6, rainfall: 90 },
-      { month: 10, temperature: 18, humidity: 78, uv_intensity: 5, rainfall: 70 },
-      { month: 11, temperature: 12, humidity: 74, uv_intensity: 4, rainfall: 55 },
-      { month: 12, temperature: 6, humidity: 75, uv_intensity: 3, rainfall: 30 },
-    ],
-  },
-
-  // 西安 - 温带季风气候
-  {
-    cityId: 'xa',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: -1, humidity: 58, uv_intensity: 3, rainfall: 6 },
-      { month: 2, temperature: 3, humidity: 54, uv_intensity: 4, rainfall: 10 },
-      { month: 3, temperature: 8, humidity: 54, uv_intensity: 5, rainfall: 25 },
-      { month: 4, temperature: 15, humidity: 54, uv_intensity: 7, rainfall: 35 },
-      { month: 5, temperature: 20, humidity: 56, uv_intensity: 8, rainfall: 55 },
-      { month: 6, temperature: 25, humidity: 60, uv_intensity: 9, rainfall: 60 },
-      { month: 7, temperature: 27, humidity: 70, uv_intensity: 8, rainfall: 100 },
-      { month: 8, temperature: 26, humidity: 73, uv_intensity: 7, rainfall: 80 },
-      { month: 9, temperature: 21, humidity: 71, uv_intensity: 6, rainfall: 90 },
-      { month: 10, temperature: 14, humidity: 70, uv_intensity: 5, rainfall: 60 },
-      { month: 11, temperature: 7, humidity: 69, uv_intensity: 3, rainfall: 20 },
-      { month: 12, temperature: 1, humidity: 64, uv_intensity: 3, rainfall: 5 },
-    ],
-  },
-
-  // 南京 - 亚热带季风气候
-  {
-    cityId: 'nj',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 2, humidity: 73, uv_intensity: 3, rainfall: 40 },
-      { month: 2, temperature: 4, humidity: 72, uv_intensity: 4, rainfall: 50 },
-      { month: 3, temperature: 8, humidity: 71, uv_intensity: 5, rainfall: 80 },
-      { month: 4, temperature: 14, humidity: 70, uv_intensity: 6, rainfall: 80 },
-      { month: 5, temperature: 20, humidity: 72, uv_intensity: 7, rainfall: 90 },
-      { month: 6, temperature: 24, humidity: 79, uv_intensity: 8, rainfall: 170 },
-      { month: 7, temperature: 28, humidity: 81, uv_intensity: 9, rainfall: 180 },
-      { month: 8, temperature: 28, humidity: 82, uv_intensity: 7, rainfall: 140 },
-      { month: 9, temperature: 24, humidity: 80, uv_intensity: 6, rainfall: 90 },
-      { month: 10, temperature: 18, humidity: 76, uv_intensity: 5, rainfall: 55 },
-      { month: 11, temperature: 11, humidity: 73, uv_intensity: 4, rainfall: 50 },
-      { month: 12, temperature: 5, humidity: 72, uv_intensity: 3, rainfall: 30 },
-    ],
-  },
-
-  // 苏州 - 亚热带季风气候
-  {
-    cityId: 'suzhou',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 4, humidity: 74, uv_intensity: 3, rainfall: 55 },
-      { month: 2, temperature: 6, humidity: 75, uv_intensity: 4, rainfall: 65 },
-      { month: 3, temperature: 10, humidity: 76, uv_intensity: 5, rainfall: 100 },
-      { month: 4, temperature: 15, humidity: 73, uv_intensity: 6, rainfall: 90 },
-      { month: 5, temperature: 20, humidity: 75, uv_intensity: 7, rainfall: 110 },
-      { month: 6, temperature: 24, humidity: 80, uv_intensity: 8, rainfall: 180 },
-      { month: 7, temperature: 28, humidity: 82, uv_intensity: 9, rainfall: 170 },
-      { month: 8, temperature: 28, humidity: 82, uv_intensity: 7, rainfall: 150 },
-      { month: 9, temperature: 24, humidity: 81, uv_intensity: 6, rainfall: 120 },
-      { month: 10, temperature: 18, humidity: 79, uv_intensity: 5, rainfall: 65 },
-      { month: 11, temperature: 12, humidity: 76, uv_intensity: 4, rainfall: 55 },
-      { month: 12, temperature: 6, humidity: 74, uv_intensity: 3, rainfall: 40 },
-    ],
-  },
-
-  // 宁波 - 亚热带季风气候
-  {
-    cityId: 'nb',
-    year: 2024,
-    monthlyData: [
-      { month: 1, temperature: 5, humidity: 73, uv_intensity: 3, rainfall: 60 },
-      { month: 2, temperature: 6, humidity: 74, uv_intensity: 4, rainfall: 75 },
-      { month: 3, temperature: 9, humidity: 76, uv_intensity: 5, rainfall: 110 },
-      { month: 4, temperature: 15, humidity: 75, uv_intensity: 6, rainfall: 100 },
-      { month: 5, temperature: 20, humidity: 78, uv_intensity: 7, rainfall: 120 },
-      { month: 6, temperature: 24, humidity: 84, uv_intensity: 8, rainfall: 190 },
-      { month: 7, temperature: 28, humidity: 84, uv_intensity: 9, rainfall: 160 },
-      { month: 8, temperature: 28, humidity: 84, uv_intensity: 7, rainfall: 150 },
-      { month: 9, temperature: 24, humidity: 82, uv_intensity: 6, rainfall: 120 },
-      { month: 10, temperature: 19, humidity: 78, uv_intensity: 5, rainfall: 65 },
-      { month: 11, temperature: 13, humidity: 75, uv_intensity: 4, rainfall: 55 },
-      { month: 12, temperature: 8, humidity: 74, uv_intensity: 3, rainfall: 45 },
-    ],
-  },
-];
+// 生成所有城市的气象数据
+export const weatherData: CityWeatherData[] = chinaCities.map((provinceData, provinceIndex) => {
+  return provinceData.cities.map((city, cityIndex) => {
+    return generateCityWeather(city.id, provinceData.province, cityIndex - Math.floor(provinceData.cities.length / 2));
+  });
+}).flat();
 
 export default weatherData;
