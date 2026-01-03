@@ -11,10 +11,14 @@ import { City, WeatherIndexType } from '@/types';
 export default function Home() {
   const [selectedCities, setSelectedCities] = useState<City[]>([]);
   const [currentIndicator, setCurrentIndicator] = useState<WeatherIndexType>('temperature');
+  const [selectedYear, setSelectedYear] = useState(2024);
   const [searchTerm, setSearchTerm] = useState('');
   const [showCitySelector, setShowCitySelector] = useState(false);
   const [showIndicatorInfo, setShowIndicatorInfo] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
+
+  // 可选年份列表（近10年）
+  const years = [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
 
   // 颜色配置
   const colors = ['#5470c6', '#91cc75', '#fac858'];
@@ -42,10 +46,11 @@ export default function Home() {
     const indicator = getIndicatorByType(currentIndicator);
 
     const series = selectedCities.map((city, index) => {
-      const cityData = weatherData.find(d => d.cityId === city.id);
+      // 根据选择的年份筛选数据
+      const cityData = weatherData.find(d => d.cityId === city.id && d.year === selectedYear);
       const data = cityData ? cityData.monthlyData.map(m => m[currentIndicator]) : [];
 
-      console.log(`城市: ${city.name}, ID: ${city.id}, 有数据: ${!!cityData}, 数据长度: ${data.length}`);
+      console.log(`城市: ${city.name}, ID: ${city.id}, 年份: ${selectedYear}, 有数据: ${!!cityData}, 数据长度: ${data.length}`);
 
       return {
         name: city.name,
@@ -60,7 +65,7 @@ export default function Home() {
 
     return {
       title: {
-        text: `${indicator.name}对比图`,
+        text: `${selectedYear}年${indicator.name}对比图`,
         left: 'center',
         textStyle: {
           fontSize: 20,
@@ -175,7 +180,7 @@ export default function Home() {
           </div>
 
           {/* 指标选择区域 */}
-          <div>
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               选择对比指标
             </label>
@@ -202,6 +207,28 @@ export default function Home() {
               </button>
             </div>
           </div>
+
+          {/* 年份选择区域 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              选择年份
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {years.map((year) => (
+                <button
+                  key={year}
+                  onClick={() => setSelectedYear(year)}
+                  className={`px-4 py-2 rounded-lg transition-colors text-sm ${
+                    selectedYear === year
+                      ? 'bg-green-600 text-white font-medium'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </header>
 
@@ -213,9 +240,10 @@ export default function Home() {
               <div className="mb-4 p-3 bg-gray-50 rounded text-sm">
                 <p><strong>当前选择：</strong>{selectedCities.map(c => `${c.name}(${c.id})`).join(', ')}</p>
                 <p><strong>当前指标：</strong>{currentIndicator}</p>
+                <p><strong>当前年份：</strong>{selectedYear}</p>
               </div>
               <ReactECharts
-                key={`${selectedCities.map(c => c.id).join('-')}-${currentIndicator}`}
+                key={`${selectedCities.map(c => c.id).join('-')}-${currentIndicator}-${selectedYear}`}
                 option={getChartOption()}
                 style={{ height: '500px' }}
                 opts={{ renderer: 'canvas' }}

@@ -63,12 +63,16 @@ const provinceClimate: Record<string, ClimateFeature> = {
   '澳门特别行政区': { baseTemp: [15, 16, 18, 22, 26, 28, 29, 29, 28, 25, 21, 17], humidityBase: 78, rainfallPattern: [0.07, 0.11, 0.15, 0.28, 0.39, 0.48, 0.40, 0.48, 0.36, 0.15, 0.07, 0.06], uvBase: [4, 5, 6, 7, 8, 9, 9, 8, 8, 6, 5, 4] },
 };
 
-// 根据省份生成城市气象数据
-function generateCityWeather(cityId: string, province: string, cityIndex: number = 0): CityWeatherData {
+// 根据省份和年份生成城市气象数据
+function generateCityWeather(cityId: string, province: string, year: number, cityIndex: number = 0): CityWeatherData {
   const climate = provinceClimate[province];
   if (!climate) {
-    return generateCityWeather(cityId, '北京市', cityIndex);
+    return generateCityWeather(cityId, '北京市', year, cityIndex);
   }
+
+  // 年份偏差因子（模拟气候变化，近10年略有波动）
+  const yearFactor = (year - 2015) * 0.05; // 每年0.05度的趋势
+  const randomFactor = (Math.sin(year * cityIndex) * 0.3); // 年份相关的随机波动
 
   // 同一省份内城市湿度略有差异（±2%）
   const humidityVariation = (cityIndex % 3 - 1) * 2;
@@ -77,18 +81,30 @@ function generateCityWeather(cityId: string, province: string, cityIndex: number
     // 根据季节调整湿度（夏季高、冬季低）
     const seasonFactor = month >= 4 && month <= 8 ? 1 : month >= 0 && month <= 2 ? 0.9 : 0.95;
 
+    // 温度：基准值 + 城市偏差 + 年份趋势 + 季节性随机
+    const temperature = Math.round((temp + (cityIndex % 5 - 2) * 0.3 + yearFactor + randomFactor + Math.random() * 0.5) * 10) / 10;
+
+    // 湿度：基准值 + 季节因子 + 城市偏差 + 年份随机
+    const humidity = Math.min(95, Math.max(20, Math.round(climate.humidityBase * seasonFactor + humidityVariation + Math.random() * 3 - (year - 2019) * 0.2)));
+
+    // 紫外线：基准值 + 小幅随机
+    const uv_intensity = Math.max(1, Math.min(12, Math.round(climate.uvBase[month] + Math.random() * 2)));
+
+    // 降雨量：基准模式 * 年份因子 + 随机
+    const rainfall = Math.round(climate.rainfallPattern[month] * 200 * (1 + (cityIndex % 3 - 1) * 0.1) * (1 + Math.random() * 0.1) * (1 + (year - 2019) * 0.02));
+
     return {
       month: month + 1,
-      temperature: Math.round((temp + (cityIndex % 5 - 2) * 0.3) * 10) / 10,
-      humidity: Math.min(95, Math.max(20, Math.round(climate.humidityBase * seasonFactor + humidityVariation + Math.random() * 3))),
-      uv_intensity: climate.uvBase[month],
-      rainfall: Math.round(climate.rainfallPattern[month] * 200 * (1 + (cityIndex % 3 - 1) * 0.1) * (1 + Math.random() * 0.1)),
+      temperature,
+      humidity,
+      uv_intensity,
+      rainfall,
     };
   });
 
   return {
     cityId,
-    year: 2024,
+    year,
     monthlyData,
   };
 }
@@ -96,10 +112,15 @@ function generateCityWeather(cityId: string, province: string, cityIndex: number
 // 导入城市列表
 import { chinaCities } from '@/data/chinaCities';
 
-// 生成所有城市的气象数据
+// 生成所有城市的气象数据（2015-2024）
 export const weatherData: CityWeatherData[] = chinaCities.flatMap((provinceData) => {
-  return provinceData.cities.map((city, cityIndex) => {
-    return generateCityWeather(city.id, provinceData.province, cityIndex);
+  const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+
+  return provinceData.cities.flatMap((city, cityIndex) => {
+    // 为每个城市生成10年的数据
+    return years.map(year =>
+      generateCityWeather(city.id, provinceData.province, year, cityIndex)
+    );
   });
 });
 
