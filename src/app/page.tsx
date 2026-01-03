@@ -426,6 +426,156 @@ export default function Home() {
         </svg>
       </div>
 
+      {/* 海鸥 - 前景海洋元素 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '50%',
+          zIndex: 9,
+          pointerEvents: 'none',
+        }}
+      >
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 1920 500"
+          preserveAspectRatio="none"
+          style={{ display: 'block' }}
+        >
+          {/* 海鸥1 */}
+          <g style={{ transform: 'translate(150px, 80px) scale(0.6)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.7"
+            />
+          </g>
+
+          {/* 海鸥2 */}
+          <g style={{ transform: 'translate(350px, 120px) scale(0.8)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.8"
+            />
+          </g>
+
+          {/* 海鸥3 - 稍微不同的角度 */}
+          <g style={{ transform: 'translate(550px, 60px) scale(0.5)' }}>
+            <path
+              d="M0 20 Q15 10 30 20 Q45 10 60 20 Q30 28 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2.5"
+              opacity="0.6"
+            />
+          </g>
+
+          {/* 海鸥4 */}
+          <g style={{ transform: 'translate(1100px, 100px) scale(0.7)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.75"
+            />
+          </g>
+
+          {/* 海鸥5 */}
+          <g style={{ transform: 'translate(1400px, 70px) scale(0.55)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.65"
+            />
+          </g>
+
+          {/* 海鸥6 - 较大 */}
+          <g style={{ transform: 'translate(1650px, 130px) scale(0.9)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.8"
+            />
+          </g>
+
+          {/* 海鸥7 */}
+          <g style={{ transform: 'translate(800px, 40px) scale(0.45)' }}>
+            <path
+              d="M0 20 Q15 10 30 20 Q45 10 60 20 Q30 28 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2.5"
+              opacity="0.55"
+            />
+          </g>
+
+          {/* 海鸥8 */}
+          <g style={{ transform: 'translate(1250px, 160px) scale(0.65)' }}>
+            <path
+              d="M0 20 Q20 5 40 20 Q60 5 80 20 Q40 30 0 20"
+              fill="none"
+              stroke="#546E7A"
+              strokeWidth="2"
+              opacity="0.7"
+            />
+          </g>
+        </svg>
+      </div>
+
+      {/* 泡沫装饰 - 增加海洋氛围 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '10%',
+          left: 0,
+          right: 0,
+          height: '5%',
+          zIndex: 9,
+          pointerEvents: 'none',
+        }}
+      >
+        <svg
+          width="100%"
+          height="50"
+          viewBox="0 0 1920 50"
+          preserveAspectRatio="none"
+        >
+          {Array.from({ length: 30 }).map((_, i) => {
+            const randomX = seededRandom(i + 500);
+            const randomY = seededRandom(i + 600);
+            const randomSize = seededRandom(i + 700);
+
+            const x = Number((i * 64 + randomX * 40).toFixed(6));
+            const y = Number((15 + randomY * 30).toFixed(6));
+            const size = Number((2 + randomSize * 6).toFixed(6));
+
+            return (
+              <circle
+                key={i}
+                cx={x}
+                cy={y}
+                r={size}
+                fill="rgba(255, 255, 255, 0.6)"
+                opacity={0.4 + randomSize * 0.4}
+              />
+            );
+          })}
+        </svg>
+      </div>
+
       {/* 顶部操作区 */}
       <header
         className="shadow-lg border-b border-white/20"
