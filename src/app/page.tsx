@@ -580,7 +580,7 @@ export default function Home() {
       <header
         className="shadow-lg border-b border-white/20"
         style={{
-          background: 'rgba(255, 255, 255, 0.92)',
+          background: 'rgba(255, 255, 255, 0.5)',
           backdropFilter: 'blur(10px)',
           position: 'relative',
           zIndex: 10,
@@ -679,7 +679,7 @@ export default function Home() {
         <div
           className="rounded-lg shadow-xl p-6 min-h-[500px]"
           style={{
-            background: 'rgba(255, 255, 255, 0.95)',
+            background: 'rgba(255, 255, 255, 0.5)',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
           }}
@@ -712,7 +712,7 @@ export default function Home() {
       <footer
         className="border-t border-white/20 mt-8"
         style={{
-          background: 'rgba(255, 255, 255, 0.85)',
+          background: 'rgba(255, 255, 255, 0.5)',
           backdropFilter: 'blur(10px)',
           position: 'relative',
           zIndex: 10,
@@ -736,7 +736,7 @@ export default function Home() {
           <div
             className="rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
             style={{
-              background: 'rgba(255, 255, 255, 0.98)',
+              background: 'rgba(255, 255, 255, 0.5)',
               backdropFilter: 'blur(20px)',
             }}
             onClick={(e) => e.stopPropagation()}
@@ -854,7 +854,7 @@ export default function Home() {
           <div
             className="rounded-lg shadow-2xl max-w-md w-full"
             style={{
-              background: 'rgba(255, 255, 255, 0.98)',
+              background: 'rgba(255, 255, 255, 0.5)',
               backdropFilter: 'blur(20px)',
             }}
             onClick={(e) => e.stopPropagation()}
