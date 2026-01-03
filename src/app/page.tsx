@@ -542,7 +542,7 @@ export default function Home() {
       <header
         className="shadow-lg border-b border-white/20"
         style={{
-          background: 'rgba(255, 255, 255, 0.5)',
+          background: 'rgba(255, 255, 255, 0.7)',
           backdropFilter: 'blur(10px)',
           position: 'relative',
           zIndex: 10,
@@ -674,7 +674,7 @@ export default function Home() {
       <footer
         className="border-t border-white/20 mt-8"
         style={{
-          background: 'rgba(255, 255, 255, 0.5)',
+          background: 'rgba(255, 255, 255, 0.4)',
           backdropFilter: 'blur(10px)',
           position: 'relative',
           zIndex: 10,
