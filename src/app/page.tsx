@@ -97,21 +97,6 @@ export default function Home() {
         },
       },
       series: series,
-      dataZoom: [
-        {
-          type: 'slider',
-          show: true,
-          xAxisIndex: [0],
-          start: 0,
-          end: 100,
-        },
-        {
-          type: 'inside',
-          xAxisIndex: [0],
-          start: 0,
-          end: 100,
-        },
-      ],
     };
   };
 

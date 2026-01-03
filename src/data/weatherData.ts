@@ -82,6 +82,26 @@ export const weatherData: CityWeatherData[] = [
     ],
   },
 
+  // 海口 - 热带季风气候
+  {
+    cityId: 'hk',
+    year: 2024,
+    monthlyData: [
+      { month: 1, temperature: 18, humidity: 82, uv_intensity: 7, rainfall: 25 },
+      { month: 2, temperature: 19, humidity: 84, uv_intensity: 8, rainfall: 45 },
+      { month: 3, temperature: 22, humidity: 85, uv_intensity: 9, rainfall: 70 },
+      { month: 4, temperature: 26, humidity: 83, uv_intensity: 10, rainfall: 100 },
+      { month: 5, temperature: 29, humidity: 81, uv_intensity: 11, rainfall: 200 },
+      { month: 6, temperature: 30, humidity: 83, uv_intensity: 10, rainfall: 250 },
+      { month: 7, temperature: 30, humidity: 82, uv_intensity: 9, rainfall: 220 },
+      { month: 8, temperature: 29, humidity: 83, uv_intensity: 9, rainfall: 300 },
+      { month: 9, temperature: 28, humidity: 83, uv_intensity: 8, rainfall: 300 },
+      { month: 10, temperature: 26, humidity: 81, uv_intensity: 8, rainfall: 180 },
+      { month: 11, temperature: 23, humidity: 80, uv_intensity: 7, rainfall: 80 },
+      { month: 12, temperature: 19, humidity: 80, uv_intensity: 7, rainfall: 45 },
+    ],
+  },
+
   // 成都 - 亚热带湿润气候
   {
     cityId: 'cd',
