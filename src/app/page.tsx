@@ -46,7 +46,7 @@ export default function Home() {
           color: colors[index % colors.length],
         },
       };
-    });
+    }).filter(s => s.data && s.data.length > 0);
 
     return {
       title: {
@@ -186,6 +186,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow-md p-6 min-h-[500px]">
           {selectedCities.length > 0 ? (
             <ReactECharts
+              key={`${selectedCities.map(c => c.id).join('-')}-${currentIndicator}`}
               option={getChartOption()}
               style={{ height: '500px' }}
               opts={{ renderer: 'canvas' }}

@@ -46,7 +46,7 @@ export const cities: City[] = [
   { id: 'wlmq', name: '乌鲁木齐', province: '新疆维吾尔自治区' },
 
   // 东北地区
-  { id: 'sy', name: '沈阳', province: '辽宁省' },
+  { id: 'shenyang', name: '沈阳', province: '辽宁省' },
   { id: 'dl', name: '大连', province: '辽宁省' },
   { id: 'cc', name: '长春', province: '吉林省' },
   { id: 'heb', name: '哈尔滨', province: '黑龙江省' },
