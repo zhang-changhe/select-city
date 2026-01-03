@@ -181,65 +181,237 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
-        background: 'linear-gradient(180deg, #87CEEB 0%, #98D8C8 20%, #7CB342 40%, #558B2F 60%, #33691E 80%, #1B5E20 100%)',
+        background: 'linear-gradient(180deg, #87CEEB 0%, #B3E5FC 25%, #E0F7FA 50%, #B9F6CA 75%, #C8E6C9 90%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* 添加自然背景装饰 - 模拟山脉和森林 */}
+      {/* 天空层 - 渐变效果 */}
       <div
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
-          bottom: 0,
-          background: `
-            linear-gradient(180deg,
-              transparent 0%,
-              transparent 35%,
-              rgba(76, 175, 80, 0.1) 40%,
-              rgba(56, 142, 60, 0.2) 50%,
-              rgba(46, 125, 50, 0.3) 60%,
-              rgba(27, 94, 32, 0.4) 70%,
-              rgba(0, 77, 64, 0.5) 100%
-            ),
-            radial-gradient(ellipse 80% 50% at 50% 100%, rgba(33, 150, 243, 0.3) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 40% at 20% 80%, rgba(76, 175, 80, 0.2) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 35% at 80% 75%, rgba(56, 142, 60, 0.2) 0%, transparent 50%)
-          `,
-          pointerEvents: 'none',
-          zIndex: 0,
+          height: '60%',
+          background: 'linear-gradient(180deg, #87CEEB 0%, #4FC3F7 30%, #81D4FA 60%, #B3E5FC 100%)',
+          zIndex: 1,
         }}
       />
 
-      {/* 模拟山脉轮廓 */}
+      {/* 太阳 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '8%',
+          right: '12%',
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, #FFF176 0%, #FFD54F 50%, #FF8A65 100%)',
+          boxShadow: '0 0 60px 20px rgba(255, 213, 79, 0.4)',
+          zIndex: 2,
+        }}
+      />
+
+      {/* 云朵装饰 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '15%',
+          left: '10%',
+          width: '200px',
+          height: '60px',
+          background: 'rgba(255, 255, 255, 0.9)',
+          borderRadius: '50%',
+          filter: 'blur(8px)',
+          zIndex: 3,
+          boxShadow: '80px 20px 0 rgba(255, 255, 255, 0.8)',
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          top: '25%',
+          left: '60%',
+          width: '250px',
+          height: '70px',
+          background: 'rgba(255, 255, 255, 0.85)',
+          borderRadius: '50%',
+          filter: 'blur(6px)',
+          zIndex: 3,
+          boxShadow: '90px 15px 0 rgba(255, 255, 255, 0.75)',
+        }}
+      />
+
+      {/* 远山层 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '35%',
+          left: 0,
+          right: 0,
+          zIndex: 4,
+        }}
+      >
+        <svg
+          width="100%"
+          height="300"
+          viewBox="0 0 1920 300"
+          preserveAspectRatio="none"
+          style={{ display: 'block' }}
+        >
+          <path
+            d="M0 300 L0 180 Q200 80 400 150 Q600 220 800 120 Q1000 20 1200 140 Q1400 260 1600 100 Q1700 20 1800 80 Q1860 120 1920 100 L1920 300 Z"
+            fill="rgba(120, 144, 156, 0.4)"
+          />
+          <path
+            d="M0 300 L0 220 Q150 140 350 190 Q550 240 750 160 Q950 80 1150 170 Q1350 260 1550 130 Q1650 80 1750 120 Q1820 150 1920 130 L1920 300 Z"
+            fill="rgba(102, 126, 130, 0.5)"
+          />
+        </svg>
+      </div>
+
+      {/* 中山层 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '28%',
+          left: 0,
+          right: 0,
+          zIndex: 5,
+        }}
+      >
+        <svg
+          width="100%"
+          height="280"
+          viewBox="0 0 1920 280"
+          preserveAspectRatio="none"
+          style={{ display: 'block' }}
+        >
+          <path
+            d="M0 280 L0 150 Q300 50 500 120 Q700 190 900 100 Q1100 10 1300 130 Q1500 250 1700 80 Q1800 30 1920 60 L1920 280 Z"
+            fill="rgba(84, 110, 122, 0.6)"
+          />
+          <path
+            d="M0 280 L0 200 Q200 120 450 170 Q700 220 950 140 Q1200 60 1450 160 Q1700 260 1850 120 L1920 140 L1920 280 Z"
+            fill="rgba(69, 90, 100, 0.7)"
+          />
+        </svg>
+      </div>
+
+      {/* 近山层 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '20%',
+          left: 0,
+          right: 0,
+          zIndex: 6,
+        }}
+      >
+        <svg
+          width="100%"
+          height="250"
+          viewBox="0 0 1920 250"
+          preserveAspectRatio="none"
+          style={{ display: 'block' }}
+        >
+          <path
+            d="M0 250 L0 180 Q250 80 500 130 Q750 180 1000 110 Q1250 40 1500 140 Q1700 240 1850 120 L1920 140 L1920 250 Z"
+            fill="rgba(56, 74, 84, 0.8)"
+          />
+          <path
+            d="M0 250 L0 210 Q200 150 400 180 Q600 210 800 160 Q1000 110 1200 180 Q1400 250 1650 160 Q1800 100 1920 140 L1920 250 Z"
+            fill="rgba(43, 58, 66, 0.9)"
+          />
+        </svg>
+      </div>
+
+      {/* 森林层 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '12%',
+          left: 0,
+          right: 0,
+          zIndex: 7,
+        }}
+      >
+        <svg
+          width="100%"
+          height="150"
+          viewBox="0 0 1920 150"
+          preserveAspectRatio="none"
+          style={{ display: 'block' }}
+        >
+          {/* 树木 */}
+          <defs>
+            <linearGradient id="forestGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: '#66BB6A', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: '#2E7D32', stopOpacity: 1 }} />
+            </linearGradient>
+          </defs>
+          {Array.from({ length: 60 }).map((_, i) => {
+            const x = (i * 32 + Math.random() * 20);
+            const height = 80 + Math.random() * 60;
+            const width = 20 + Math.random() * 15;
+            return (
+              <path
+                key={i}
+                d={`M${x} 150 L${x + width / 2} ${150 - height} L${x + width} 150 Z`}
+                fill={i % 2 === 0 ? '#66BB6A' : '#4CAF50'}
+                opacity="0.9"
+              />
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* 海洋层 */}
       <div
         style={{
           position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '40%',
-          background: `
-            linear-gradient(180deg,
-              transparent 0%,
-              rgba(46, 125, 50, 0.1) 20%,
-              rgba(27, 94, 32, 0.2) 40%,
-              rgba(0, 77, 64, 0.3) 60%,
-              rgba(0, 60, 50, 0.5) 100%
-            ),
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400'%3E%3Cpath fill='%23277022' fill-opacity='0.2' d='M0,400 L0,250 Q180,150 360,200 Q540,250 720,180 Q900,110 1080,160 Q1260,210 1440,150 L1440,400 Z'/%3E%3Cpath fill='%232E7D32' fill-opacity='0.15' d='M0,400 L0,280 Q240,180 480,220 Q720,260 960,200 Q1200,140 1440,180 L1440,400 Z'/%3E%3Cpath fill='%23388026' fill-opacity='0.1' d='M0,400 L0,300 Q300,220 600,260 Q900,300 1200,240 Q1320,220 1440,250 L1440,400 Z'/%3E%3C/svg%3E"),
-            no-repeat,
-            bottom,
-            background-size: cover,
-          `,
-          pointerEvents: 'none',
-          zIndex: 0,
+          height: '12%',
+          background: 'linear-gradient(180deg, #4FC3F7 0%, #29B6F6 30%, #039BE5 70%, #0277BD 100%)',
+          zIndex: 8,
         }}
-      />
+      >
+        {/* 波浪效果 */}
+        <svg
+          width="100%"
+          height="60"
+          viewBox="0 0 1920 60"
+          preserveAspectRatio="none"
+          style={{ position: 'absolute', top: 0, left: 0 }}
+        >
+          <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{ stopColor: 'rgba(255, 255, 255, 0.3)', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: 'rgba(255, 255, 255, 0.1)', stopOpacity: 1 }} />
+            </linearGradient>
+          </defs>
+          {Array.from({ length: 3 }).map((_, i) => {
+            const offset = i * 20;
+            const opacity = 0.5 - i * 0.1;
+            return (
+              <path
+                key={i}
+                d={`M0 ${30 + offset} Q120 ${10 + offset} 240 ${30 + offset} Q360 ${50 + offset} 480 ${30 + offset} Q600 ${10 + offset} 720 ${30 + offset} Q840 ${50 + offset} 960 ${30 + offset} Q1080 ${10 + offset} 1200 ${30 + offset} Q1320 ${50 + offset} 1440 ${30 + offset} Q1560 ${10 + offset} 1680 ${30 + offset} Q1800 ${50 + offset} 1920 ${30 + offset} L1920 60 L0 60 Z`}
+                fill="url(#waveGradient)"
+                style={{ opacity }}
+              />
+            );
+          })}
+        </svg>
+      </div>
+
       {/* 顶部操作区 */}
       <header
         className="shadow-lg border-b border-white/20"
