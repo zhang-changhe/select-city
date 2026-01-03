@@ -187,9 +187,7 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
-        background: 'linear-gradient(180deg, #4FC3F7 0%, #29B6F6 30%, #0288D1 60%, #0277BD 100%)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        background: 'url(/沙滩背景.png) center/cover no-repeat',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -204,6 +202,7 @@ export default function Home() {
           height: '65%',
           background: 'linear-gradient(180deg, #64B5F6 0%, #42A5F5 40%, #2196F3 70%, #1976D2 100%)',
           zIndex: 1,
+          display: 'none',
         }}
       />
 
@@ -219,6 +218,7 @@ export default function Home() {
           background: 'radial-gradient(circle, #FFF59D 0%, #FFEE58 30%, #FFC107 70%, #FF9800 100%)',
           boxShadow: '0 0 80px 30px rgba(255, 235, 59, 0.3)',
           zIndex: 2,
+          display: 'none',
         }}
       />
 
@@ -229,6 +229,7 @@ export default function Home() {
           top: '12%',
           left: '8%',
           zIndex: 3,
+          display: 'none',
         }}
       >
         <svg width="200" height="80" viewBox="0 0 200 80">
@@ -244,6 +245,7 @@ export default function Home() {
           top: '20%',
           left: '55%',
           zIndex: 3,
+          display: 'none',
         }}
       >
         <svg width="180" height="70" viewBox="0 0 180 70">
@@ -260,6 +262,7 @@ export default function Home() {
           left: '30%',
           zIndex: 3,
           opacity: 0.8,
+          display: 'none',
         }}
       >
         <svg width="150" height="60" viewBox="0 0 150 60">
@@ -277,6 +280,7 @@ export default function Home() {
           left: 0,
           right: 0,
           zIndex: 4,
+          display: 'none',
         }}
       >
         <svg
@@ -358,6 +362,7 @@ export default function Home() {
           height: '25%',
           background: 'linear-gradient(180deg, rgba(13, 71, 161, 0.6) 0%, #1565C0 20%, #1976D2 40%, #1E88E5 60%, #42A5F5 80%, #64B5F6 100%)',
           zIndex: 5,
+          display: 'none',
         }}
       >
         {/* 波浪效果 - 与山林自然衔接 */}
@@ -399,6 +404,7 @@ export default function Home() {
           height: '50%',
           zIndex: 6,
           pointerEvents: 'none',
+          display: 'none',
         }}
       >
         <svg
@@ -508,6 +514,7 @@ export default function Home() {
           height: '5%',
           zIndex: 6,
           pointerEvents: 'none',
+          display: 'none',
         }}
       >
         <svg
