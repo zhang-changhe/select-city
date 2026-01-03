@@ -37,6 +37,8 @@ export default function Home() {
       const cityData = weatherData.find(d => d.cityId === city.id);
       const data = cityData ? cityData.monthlyData.map(m => m[currentIndicator]) : [];
 
+      console.log(`城市: ${city.name}, ID: ${city.id}, 有数据: ${!!cityData}, 数据长度: ${data.length}`);
+
       return {
         name: city.name,
         type: 'line',
@@ -46,7 +48,7 @@ export default function Home() {
           color: colors[index % colors.length],
         },
       };
-    }).filter(s => s.data && s.data.length > 0);
+    });
 
     return {
       title: {
@@ -185,12 +187,18 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-lg shadow-md p-6 min-h-[500px]">
           {selectedCities.length > 0 ? (
-            <ReactECharts
-              key={`${selectedCities.map(c => c.id).join('-')}-${currentIndicator}`}
-              option={getChartOption()}
-              style={{ height: '500px' }}
-              opts={{ renderer: 'canvas' }}
-            />
+            <>
+              <div className="mb-4 p-3 bg-gray-50 rounded text-sm">
+                <p><strong>当前选择：</strong>{selectedCities.map(c => `${c.name}(${c.id})`).join(', ')}</p>
+                <p><strong>当前指标：</strong>{currentIndicator}</p>
+              </div>
+              <ReactECharts
+                key={`${selectedCities.map(c => c.id).join('-')}-${currentIndicator}`}
+                option={getChartOption()}
+                style={{ height: '500px' }}
+                opts={{ renderer: 'canvas' }}
+              />
+            </>
           ) : (
             <div className="flex items-center justify-center h-[500px] text-gray-400">
               <div className="text-center">
