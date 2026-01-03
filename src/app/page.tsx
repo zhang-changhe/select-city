@@ -190,7 +190,6 @@ export default function Home() {
         background: 'linear-gradient(180deg, #4FC3F7 0%, #29B6F6 30%, #0288D1 60%, #0277BD 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
         position: 'relative',
         overflow: 'hidden',
       }}
