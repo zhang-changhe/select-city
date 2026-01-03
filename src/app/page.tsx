@@ -115,20 +115,65 @@ export default function Home() {
   // 过滤城市列表（根据搜索词和选中省份）
   const filteredProvinces = chinaCities.filter(province => {
     if (!searchTerm) return true;
-    return province.province.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const provinceName = province.province.toLowerCase();
+    const searchLower = searchTerm.toLowerCase();
+
+    // 支持灵活搜索：
+    // 1. 完全匹配
+    // 2. 部分匹配
+    // 3. 支持省、自治区、特别行政区等后缀的简化搜索
+    // 例如：搜索"广西"可以匹配"广西壮族自治区"
+    let simpleProvinceName = provinceName
+      .replace('壮族自治区', '')
+      .replace('回族自治区', '')
+      .replace('维吾尔自治区', '')
+      .replace('自治区', '')
+      .replace('特别行政区', '')
+      .replace('省', '')
+      .replace('市', '');
+
+    // 添加"省"后缀的匹配（用户可能搜索"广西省"）
+    const withProvinceSuffix = simpleProvinceName + '省';
+
+    return provinceName.includes(searchLower) ||
+           simpleProvinceName.includes(searchLower) ||
+           withProvinceSuffix.includes(searchLower) ||
+           searchLower.includes(simpleProvinceName);
   });
 
   const filteredCities = (() => {
+    const searchLower = searchTerm.toLowerCase();
+
     if (selectedProvince) {
       const cities = getCitiesByProvince(selectedProvince);
-      return cities.filter(city =>
-        city.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      return cities.filter(city => {
+        // 城市名称匹配
+        if (city.name.toLowerCase().includes(searchLower)) return true;
+        return false;
+      });
     } else {
-      return getAllCities().filter(city =>
-        city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        city.province.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      return getAllCities().filter(city => {
+        // 城市名称匹配
+        if (city.name.toLowerCase().includes(searchLower)) return true;
+
+        // 省份名称匹配（同样支持简化搜索）
+        const provinceName = city.province.toLowerCase();
+        const simpleProvinceName = provinceName
+          .replace('壮族自治区', '')
+          .replace('回族自治区', '')
+          .replace('维吾尔自治区', '')
+          .replace('自治区', '')
+          .replace('特别行政区', '')
+          .replace('省', '')
+          .replace('市', '');
+        const withProvinceSuffix = simpleProvinceName + '省';
+
+        return provinceName.includes(searchLower) ||
+               simpleProvinceName.includes(searchLower) ||
+               withProvinceSuffix.includes(searchLower) ||
+               searchLower.includes(simpleProvinceName);
+      });
     }
   })();
 
