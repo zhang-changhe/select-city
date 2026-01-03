@@ -197,7 +197,7 @@ export default function Home() {
       {/* 天空层 - 蓝天白云 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
@@ -210,7 +210,7 @@ export default function Home() {
       {/* 太阳 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: '10%',
           right: '15%',
           width: '100px',
@@ -225,7 +225,7 @@ export default function Home() {
       {/* 云朵装饰 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: '12%',
           left: '8%',
           zIndex: 3,
@@ -240,7 +240,7 @@ export default function Home() {
 
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: '20%',
           left: '55%',
           zIndex: 3,
@@ -255,7 +255,7 @@ export default function Home() {
 
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: '8%',
           left: '30%',
           zIndex: 3,
@@ -272,7 +272,7 @@ export default function Home() {
       {/* 山林层 - 与大海自然衔接 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: '25%',
           left: 0,
           right: 0,
@@ -351,7 +351,7 @@ export default function Home() {
       {/* 海洋层 - 渐变过渡 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
@@ -392,7 +392,7 @@ export default function Home() {
       {/* 海鸥 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
@@ -501,7 +501,7 @@ export default function Home() {
       {/* 泡沫装饰 */}
       <div
         style={{
-          position: 'fixed',
+          position: 'absolute',
           bottom: '15%',
           left: 0,
           right: 0,
